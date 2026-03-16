@@ -1,7 +1,242 @@
 ---
-// Stub component — full implementation in Phase 4.
+import config from "virtual:starlight-page-action-config";
+
+const { actions, prompt } = config;
+const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
 ---
 
 <div class="page-actions">
-  <p>Page Actions</p>
+  <span class="page-actions-heading sl-flex">Page Actions</span>
+
+  {actions.copy && (
+    <button class="page-action-btn" id="page-action-copy" type="button">
+      <svg class="page-action-icon icon-copy" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <svg class="page-action-icon icon-check" style="display:none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <svg class="page-action-icon icon-error" style="display:none" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      <span class="page-action-label">Copy page</span>
+    </button>
+  )}
+
+  {anyAiEnabled && (
+    <div class="page-action-dropdown-wrapper">
+      <button class="page-action-btn" id="page-action-ask-ai" type="button">
+        <svg class="page-action-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V6a4 4 0 0 1 4-4z"/><path d="M18 14v-3a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v3"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/><path d="M8 18h8"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>
+        <span class="page-action-label">Ask AI</span>
+        <svg class="page-action-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="page-action-dropdown" id="page-action-dropdown" style="display:none">
+        {actions.chatgpt && (
+          <a class="page-action-dropdown-item" data-ai-service="chatgpt" href="#" target="_blank" rel="noopener noreferrer">
+            Open in ChatGPT
+          </a>
+        )}
+        {actions.claude && (
+          <a class="page-action-dropdown-item" data-ai-service="claude" href="#" target="_blank" rel="noopener noreferrer">
+            Open in Claude
+          </a>
+        )}
+        {actions.t3chat && (
+          <a class="page-action-dropdown-item" data-ai-service="t3chat" href="#" target="_blank" rel="noopener noreferrer">
+            Open in T3 Chat
+          </a>
+        )}
+      </div>
+    </div>
+  )}
 </div>
+
+<script is:inline define:vars={{ prompt }}>
+(function() {
+  // --- Copy page ---
+  const copyBtn = document.getElementById('page-action-copy');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      const iconCopy = copyBtn.querySelector('.icon-copy');
+      const iconCheck = copyBtn.querySelector('.icon-check');
+      const iconError = copyBtn.querySelector('.icon-error');
+
+      try {
+        // Build the path to the raw markdown file
+        const pathname = window.location.pathname.replace(/\/$/, '');
+        const segments = pathname.split('/').filter(Boolean);
+        const lastSegment = segments[segments.length - 1] || 'index';
+        const basePath = segments.slice(0, -1).join('/');
+
+        // Try .mdx first, then .md
+        let rawText = null;
+        for (const ext of ['mdx', 'md']) {
+          const rawUrl = `/${basePath ? basePath + '/' : ''}_page-action-raw/src/content/docs/${segments.join('/')}.${ext}`;
+          try {
+            const res = await fetch(rawUrl);
+            if (res.ok) {
+              rawText = await res.text();
+              break;
+            }
+          } catch { /* try next */ }
+        }
+
+        // Also try index variants
+        if (!rawText) {
+          for (const ext of ['mdx', 'md']) {
+            const rawUrl = `/${basePath ? basePath + '/' : ''}_page-action-raw/src/content/docs/${segments.join('/')}/index.${ext}`;
+            try {
+              const res = await fetch(rawUrl);
+              if (res.ok) {
+                rawText = await res.text();
+                break;
+              }
+            } catch { /* try next */ }
+          }
+        }
+
+        if (!rawText) throw new Error('Could not fetch page source');
+
+        await navigator.clipboard.writeText(rawText);
+
+        // Show success
+        iconCopy.style.display = 'none';
+        iconCheck.style.display = '';
+        setTimeout(() => {
+          iconCheck.style.display = 'none';
+          iconCopy.style.display = '';
+        }, 3000);
+      } catch (err) {
+        console.error('Copy page failed:', err);
+        iconCopy.style.display = 'none';
+        iconError.style.display = '';
+        setTimeout(() => {
+          iconError.style.display = 'none';
+          iconCopy.style.display = '';
+        }, 3000);
+      }
+    });
+  }
+
+  // --- Ask AI dropdown ---
+  const askAiBtn = document.getElementById('page-action-ask-ai');
+  const dropdown = document.getElementById('page-action-dropdown');
+  if (askAiBtn && dropdown) {
+    // Set AI service hrefs
+    const pageUrl = window.location.href;
+    const encodedPrompt = encodeURIComponent(prompt.replace('{url}', pageUrl));
+
+    const serviceUrls = {
+      chatgpt: 'https://chatgpt.com/?q=' + encodedPrompt,
+      claude: 'https://claude.ai/new?q=' + encodedPrompt,
+      t3chat: 'https://t3.chat/new?q=' + encodedPrompt,
+    };
+
+    dropdown.querySelectorAll('[data-ai-service]').forEach(link => {
+      const service = link.getAttribute('data-ai-service');
+      if (serviceUrls[service]) {
+        link.href = serviceUrls[service];
+      }
+    });
+
+    // Toggle dropdown
+    askAiBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = dropdown.style.display !== 'none';
+      dropdown.style.display = isOpen ? 'none' : '';
+      askAiBtn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target) && e.target !== askAiBtn) {
+        dropdown.style.display = 'none';
+        askAiBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+})();
+</script>
+
+<style>
+  .page-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .page-actions-heading {
+    color: var(--sl-color-white);
+    font-size: var(--sl-text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    padding-inline: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .page-action-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    width: 100%;
+    padding: 0.375rem 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: var(--sl-color-gray-2);
+    font: inherit;
+    font-size: var(--sl-text-xs);
+    cursor: pointer;
+    text-align: start;
+    line-height: 1.5;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .page-action-btn:hover {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-white);
+  }
+
+  .page-action-icon {
+    flex-shrink: 0;
+  }
+
+  .icon-check {
+    color: var(--sl-color-green);
+  }
+
+  .icon-error {
+    color: var(--sl-color-red);
+  }
+
+  .page-action-label {
+    flex: 1;
+  }
+
+  .page-action-chevron {
+    flex-shrink: 0;
+    margin-inline-start: auto;
+  }
+
+  .page-action-dropdown-wrapper {
+    position: relative;
+  }
+
+  .page-action-dropdown {
+    display: flex;
+    flex-direction: column;
+    margin-inline-start: 1.25rem;
+    border-inline-start: 1px solid var(--sl-color-gray-5);
+  }
+
+  .page-action-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.75rem;
+    color: var(--sl-color-gray-3);
+    font-size: var(--sl-text-xs);
+    text-decoration: none;
+    border-radius: 0.25rem;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .page-action-dropdown-item:hover {
+    background: var(--sl-color-gray-6);
+    color: var(--sl-color-white);
+  }
+</style>
