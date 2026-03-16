@@ -12,6 +12,7 @@ const defaultConfig = {
     chatgpt: true,
     claude: true,
     t3chat: true,
+    scrollTop: true,
   },
 };
 

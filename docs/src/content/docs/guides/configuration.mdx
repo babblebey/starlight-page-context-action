@@ -66,12 +66,13 @@ starlightPageContextAction({
 
 An object controlling which action buttons are displayed.
 
-| Key       | Type      | Default | Description                          |
-|-----------|-----------|---------|--------------------------------------|
-| `copy`    | `boolean` | `true`  | Show the "Copy page" button.         |
-| `chatgpt` | `boolean` | `true`  | Show "Open in ChatGPT" in the dropdown. |
-| `claude`  | `boolean` | `true`  | Show "Open in Claude" in the dropdown.  |
-| `t3chat`  | `boolean` | `true`  | Show "Open in T3 Chat" in the dropdown. |
+| Key         | Type      | Default | Description                                          |
+|-------------|-----------|---------|------------------------------------------------------|
+| `copy`      | `boolean` | `true`  | Show the "Copy page" button.                         |
+| `chatgpt`   | `boolean` | `true`  | Show "Open in ChatGPT" in the dropdown.              |
+| `claude`    | `boolean` | `true`  | Show "Open in Claude" in the dropdown.               |
+| `t3chat`    | `boolean` | `true`  | Show "Open in T3 Chat" in the dropdown.              |
+| `scrollTop` | `boolean` | `true`  | Show a "Scroll to top" button.                       |
 
 ```js
 starlightPageContextAction({
@@ -80,6 +81,7 @@ starlightPageContextAction({
     chatgpt: true,
     claude: false, // Hide Claude option
     t3chat: false, // Hide T3 Chat option
+    scrollTop: true, // Show scroll-to-top button in compact layout
   },
 });
 ```
@@ -121,6 +123,7 @@ export default defineConfig({
             chatgpt: true,
             claude: true,
             t3chat: false,
+            scrollTop: true,
           },
         }),
       ],

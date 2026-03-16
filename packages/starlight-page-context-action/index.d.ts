@@ -9,6 +9,8 @@ export interface StarlightPageContextActionActions {
   claude?: boolean;
   /** Show "Open in T3 Chat" in the AI dropdown. @default true */
   t3chat?: boolean;
+  /** Show "Scroll to top" button. @default true */
+  scrollTop?: boolean;
 }
 
 export interface StarlightPageContextActionConfig {

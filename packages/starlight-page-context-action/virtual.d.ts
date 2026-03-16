@@ -9,6 +9,7 @@ declare module "virtual:starlight-page-context-action-config" {
       chatgpt: boolean;
       claude: boolean;
       t3chat: boolean;
+      scrollTop: boolean;
     };
   };
   export default config;
