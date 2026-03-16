@@ -265,11 +265,11 @@ starlightPageAction(userConfig?) → StarlightPlugin
 
 ### Phase 2: Plugin Core
 
-- [ ] Implement `index.js` with `starlightPageAction()` function
-- [ ] Config merging and validation logic
-- [ ] Astro integration with `vite-plugin-virtual` and `vite-plugin-static-copy`
-- [ ] `updateConfig()` call to override `PageSidebar`
-- [ ] Write `index.d.ts` and `virtual.d.ts` for TypeScript support
+- [x] Implement `index.js` with `starlightPageAction()` function
+- [x] Config merging and validation logic
+- [x] Astro integration with `vite-plugin-virtual` and `vite-plugin-static-copy`
+- [x] `updateConfig()` call to override `PageSidebar`
+- [x] Write `index.d.ts` and `virtual.d.ts` for TypeScript support
 
 ### Phase 3: PageSidebar Override
 
