@@ -6,7 +6,7 @@ const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
 ---
 
 <div class="page-actions">
-  <span class="page-actions-heading sl-flex">Page Actions</span>
+  <h2 class="page-actions-heading sl-flex">Page Actions</h2>
 
   {actions.copy && (
     <button class="page-action-btn" id="page-action-copy" type="button">
@@ -21,7 +21,7 @@ const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
     <div class="page-action-dropdown-wrapper">
       <button class="page-action-btn" id="page-action-ask-ai" type="button">
         <svg class="page-action-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a4 4 0 0 1 4 4v1a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V6a4 4 0 0 1 4-4z"/><path d="M18 14v-3a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v3"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/><path d="M8 18h8"/><rect x="5" y="10" width="14" height="10" rx="2"/></svg>
-        <span class="page-action-label">Ask AI</span>
+        <span class="page-action-label">Open in Chat</span>
         <svg class="page-action-chevron" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="page-action-dropdown" id="page-action-dropdown" style="display:none">
@@ -112,10 +112,10 @@ const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
     });
   }
 
-  // --- Ask AI dropdown ---
-  const askAiBtn = document.getElementById('page-action-ask-ai');
+  // --- Open In Chat dropdown ---
+  const openInChatBtn = document.getElementById('page-action-ask-ai');
   const dropdown = document.getElementById('page-action-dropdown');
-  if (askAiBtn && dropdown) {
+  if (openInChatBtn && dropdown) {
     // Set AI service hrefs
     const pageUrl = window.location.href;
     const encodedPrompt = encodeURIComponent(prompt.replace('{url}', pageUrl));
@@ -134,18 +134,18 @@ const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
     });
 
     // Toggle dropdown
-    askAiBtn.addEventListener('click', (e) => {
+    openInChatBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       const isOpen = dropdown.style.display !== 'none';
       dropdown.style.display = isOpen ? 'none' : '';
-      askAiBtn.setAttribute('aria-expanded', String(!isOpen));
+      openInChatBtn.setAttribute('aria-expanded', String(!isOpen));
     });
 
     // Close on outside click
     document.addEventListener('click', (e) => {
-      if (!dropdown.contains(e.target) && e.target !== askAiBtn) {
+      if (!dropdown.contains(e.target) && e.target !== openInChatBtn) {
         dropdown.style.display = 'none';
-        askAiBtn.setAttribute('aria-expanded', 'false');
+        openInChatBtn.setAttribute('aria-expanded', 'false');
       }
     });
   }
@@ -187,7 +187,7 @@ const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
   }
 
   .page-action-btn:hover {
-    background: var(--sl-color-gray-6);
+    /* background: var(--sl-color-gray-6); */
     color: var(--sl-color-white);
   }
 
@@ -236,7 +236,7 @@ const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
   }
 
   .page-action-dropdown-item:hover {
-    background: var(--sl-color-gray-6);
+    /* background: var(--sl-color-gray-6); */
     color: var(--sl-color-white);
   }
 </style>
