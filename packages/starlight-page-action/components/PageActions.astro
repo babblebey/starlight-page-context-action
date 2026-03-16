@@ -202,15 +202,29 @@ const isCompact = layout === "compact";
     });
   }
 
-  // --- Popup direction helper ---
+  // --- Popup positioning helper ---
   function positionPopup(triggerEl, popupEl) {
-    popupEl.classList.remove('popup-below');
+    const gap = 8;
     const rect = triggerEl.getBoundingClientRect();
+    const popupHeight = popupEl.offsetHeight;
+    const popupWidth = popupEl.offsetWidth;
     const spaceAbove = rect.top;
-    const popupHeight = popupEl.offsetHeight || 120;
-    if (spaceAbove < popupHeight + 8) {
-      popupEl.classList.add('popup-below');
+    const spaceBelow = window.innerHeight - rect.bottom;
+
+    // Vertical: prefer above, fall back to below
+    if (spaceAbove >= popupHeight + gap) {
+      popupEl.style.top = (rect.top - popupHeight - gap) + 'px';
+    } else {
+      popupEl.style.top = (rect.bottom + gap) + 'px';
     }
+
+    // Horizontal: align left edge with trigger, clamp to viewport
+    let left = rect.left;
+    if (left + popupWidth > window.innerWidth - gap) {
+      left = window.innerWidth - popupWidth - gap;
+    }
+    if (left < gap) left = gap;
+    popupEl.style.left = left + 'px';
   }
 
   // --- Spread layout: "Open in Chat" dropdown toggle ---
@@ -268,9 +282,7 @@ const isCompact = layout === "compact";
   }
 
   .page-action-popup {
-    position: absolute;
-    bottom: calc(100% + 0.5rem);
-    left: 0;
+    position: fixed;
     display: flex;
     flex-direction: column;
     min-width: 12rem;
@@ -280,11 +292,6 @@ const isCompact = layout === "compact";
     border-radius: 0.5rem;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     z-index: 10;
-  }
-
-  .page-action-popup.popup-below {
-    bottom: auto;
-    top: calc(100% + 0.5rem);
   }
 
   .page-action-popup-item {
@@ -424,8 +431,5 @@ const isCompact = layout === "compact";
     border-color: var(--sl-color-gray-4);
   }
 
-  .page-actions--compact .page-action-popup {
-    right: 0;
-    left: auto;
-  }
+
 </style>
