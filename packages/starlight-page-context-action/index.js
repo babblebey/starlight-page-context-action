@@ -6,6 +6,7 @@ const defaultConfig = {
   prompt: "Read {url}. I want to ask questions about it.",
   position: "above-toc",
   layout: "spread",
+  sticky: false,
   actions: {
     copy: true,
     chatgpt: true,
@@ -36,6 +37,7 @@ export default function starlightPageContextAction(userConfig = {}) {
     prompt: userConfig.prompt ?? defaultConfig.prompt,
     position: userConfig.position ?? defaultConfig.position,
     layout: userConfig.layout ?? defaultConfig.layout,
+    sticky: userConfig.sticky ?? defaultConfig.sticky,
     actions: {
       ...defaultConfig.actions,
       ...userConfig.actions,

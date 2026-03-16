@@ -5,36 +5,57 @@ import config from "virtual:starlight-page-context-action-config";
 
 const showPageContextActions = Astro.locals.starlightRoute.entry.data.pageContextActions !== false;
 const position = config.position ?? "above-toc";
+const sticky = config.sticky ?? false;
+const wrapperClasses = [
+  "page-context-action-wrapper",
+  "right-sidebar-panel",
+  "sl-hidden",
+  "lg:sl-block",
+  position === "above-toc" ? "above-toc" : "below-toc",
+  sticky && "sticky",
+].filter(Boolean).join(" ");
 ---
 
 {showPageContextActions && position === "above-toc" && (
-  <>
-    <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
-      <div class="sl-container">
-        <PageContextActions />
-      </div>
+  <div class={wrapperClasses}>
+    <div class="sl-container">
+      <PageContextActions />
     </div>
-    <hr class="page-context-action-separator sl-hidden lg:sl-block" />
-  </>
+  </div>
 )}
 
 <Default><slot /></Default>
 
 {showPageContextActions && position === "below-toc" && (
-  <>
-    <hr class="page-context-action-separator sl-hidden lg:sl-block" />
-    <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
-      <div class="sl-container">
-        <PageContextActions />
-      </div>
+  <div class={wrapperClasses}>
+    <div class="sl-container">
+      <PageContextActions />
     </div>
-  </>
+  </div>
 )}
 
 <style>
-  .page-context-action-separator {
-    border: none;
-    border-top: 1px solid var(--sl-color-gray-5);
-    padding: 0 var(--sl-sidebar-pad-x);
+  .page-context-action-wrapper {
+    padding: 1rem var(--sl-sidebar-pad-x);
+  }
+
+  .page-context-action-wrapper.above-toc {
+    border-bottom: 1px solid var(--sl-color-hairline);
+  }
+
+  .page-context-action-wrapper.below-toc {
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .page-context-action-wrapper.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--sl-color-bg);
+  }
+
+  .page-context-action-wrapper.below-toc.sticky {
+    top: auto;
+    bottom: 0;
   }
 </style>

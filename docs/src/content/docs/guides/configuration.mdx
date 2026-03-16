@@ -49,6 +49,19 @@ starlightPageContextAction({
 });
 ```
 
+### `sticky`
+
+**Type:** `boolean`  
+**Default:** `false`
+
+Whether the action wrapper sticks to the top of the sidebar on scroll. When `position` is `"below-toc"`, the wrapper sticks to the bottom instead.
+
+```js
+starlightPageContextAction({
+  sticky: true,
+});
+```
+
 ### `actions`
 
 An object controlling which action buttons are displayed.
@@ -102,6 +115,7 @@ export default defineConfig({
           prompt: "Read {url} and explain it simply.",
           position: "above-toc",
           layout: "spread",
+          sticky: false,
           actions: {
             copy: true,
             chatgpt: true,

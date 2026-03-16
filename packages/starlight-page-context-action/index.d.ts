@@ -30,6 +30,11 @@ export interface StarlightPageContextActionConfig {
    * @default "spread"
    */
   layout?: "spread" | "compact";
+  /**
+   * Whether the action wrapper sticks to the top of the sidebar on scroll.
+   * @default false
+   */
+  sticky?: boolean;
   /** Configure which action buttons to show. */
   actions?: StarlightPageContextActionActions;
 }
