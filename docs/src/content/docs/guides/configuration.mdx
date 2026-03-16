@@ -33,6 +33,22 @@ starlightPageAction({
 });
 ```
 
+### `layout`
+
+**Type:** `"spread" | "compact"`  
+**Default:** `"spread"`
+
+Controls the visual layout of the action buttons.
+
+- `"spread"` — Buttons are displayed vertically in a list (default).
+- `"compact"` — A primary "Copy page" pill button is shown inline with a kebab (⋮) menu containing all actions.
+
+```js
+starlightPageAction({
+  layout: "compact",
+});
+```
+
 ### `actions`
 
 An object controlling which action buttons are displayed.
@@ -85,6 +101,7 @@ export default defineConfig({
         starlightPageAction({
           prompt: "Read {url} and explain it simply.",
           position: "above-toc",
+          layout: "spread",
           actions: {
             copy: true,
             chatgpt: true,

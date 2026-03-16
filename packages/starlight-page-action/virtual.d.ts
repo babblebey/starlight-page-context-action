@@ -2,6 +2,7 @@ declare module "virtual:starlight-page-action-config" {
   const config: {
     prompt: string;
     position: "above-toc" | "below-toc";
+    layout: "spread" | "compact";
     actions: {
       copy: boolean;
       chatgpt: boolean;

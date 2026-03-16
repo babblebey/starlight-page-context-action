@@ -5,6 +5,7 @@ import virtual from "vite-plugin-virtual";
 const defaultConfig = {
   prompt: "Read {url}. I want to ask questions about it.",
   position: "above-toc",
+  layout: "spread",
   actions: {
     copy: true,
     chatgpt: true,
@@ -34,6 +35,7 @@ export default function starlightPageAction(userConfig = {}) {
   const config = {
     prompt: userConfig.prompt ?? defaultConfig.prompt,
     position: userConfig.position ?? defaultConfig.position,
+    layout: userConfig.layout ?? defaultConfig.layout,
     actions: {
       ...defaultConfig.actions,
       ...userConfig.actions,

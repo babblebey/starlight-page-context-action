@@ -23,6 +23,13 @@ export interface StarlightPageActionConfig {
    * @default "above-toc"
    */
   position?: "above-toc" | "below-toc";
+  /**
+   * Layout style for action buttons.
+   * - `"spread"`: Buttons are spread out vertically.
+   * - `"compact"`: Primary action is shown inline with a kebab menu for all actions.
+   * @default "spread"
+   */
+  layout?: "spread" | "compact";
   /** Configure which action buttons to show. */
   actions?: StarlightPageActionActions;
 }
