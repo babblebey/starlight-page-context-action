@@ -1,0 +1,37 @@
+{
+  "name": "starlight-page-action",
+  "version": "0.0.1",
+  "description": "A Starlight plugin that adds page action buttons to the right sidebar above the table of contents.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./index.js",
+    "./overrides/PageSidebar.astro": "./overrides/PageSidebar.astro"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "virtual.d.ts",
+    "overrides",
+    "components"
+  ],
+  "keywords": [
+    "starlight",
+    "astro",
+    "plugin",
+    "page-actions",
+    "clipboard",
+    "ai"
+  ],
+  "dependencies": {
+    "vite-plugin-static-copy": "^3.0.0",
+    "vite-plugin-virtual": "^0.3.0"
+  },
+  "peerDependencies": {
+    "@astrojs/starlight": ">=0.36.0",
+    "astro": ">=5.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/starlight": ">=0.36.0"
+  }
+}

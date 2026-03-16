@@ -1,0 +1,12 @@
+{
+  "name": "starlight-page-action-monorepo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --filter docs dev",
+    "build": "pnpm --filter docs build"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
+  }
+}
