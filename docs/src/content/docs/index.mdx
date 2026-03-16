@@ -1,5 +1,42 @@
 ---
-title: Welcome
+title: Starlight Page Action
+description: A Starlight plugin that adds page action buttons to the right sidebar.
 ---
 
-This is the demo site for **starlight-page-action**.
+**starlight-page-action** is a [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the **right sidebar, above the table of contents**.
+
+## Features
+
+- **Copy page** — Copies the raw markdown content of the current page to your clipboard.
+- **Ask AI** — Opens the page in ChatGPT, Claude, or T3 Chat with a configurable prompt.
+- **Zero-config** — Works out of the box with sensible defaults.
+- **Per-page opt-out** — Disable actions on specific pages via frontmatter.
+
+## Quick Start
+
+Install the plugin in your Starlight project:
+
+```bash
+npm install starlight-page-action
+```
+
+Add it to your `astro.config.mjs`:
+
+```js
+import starlightPageAction from "starlight-page-action";
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      title: "My Docs",
+      plugins: [starlightPageAction()],
+    }),
+  ],
+});
+```
+
+Check the sidebar for **Page Actions** — you should see the "Copy page" and "Ask AI" buttons on the right side of this page.
+
+## How It Works
+
+The plugin overrides Starlight's `PageSidebar` component to inject a `PageActions` component before the table of contents. Raw markdown files are copied to the build output so the "Copy page" button can fetch and copy the source content.

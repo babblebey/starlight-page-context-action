@@ -279,18 +279,18 @@ starlightPageAction(userConfig?) → StarlightPlugin
 
 ### Phase 4: PageActions Component
 
-- [ ] Create `components/PageActions.astro`
-- [ ] Implement "Copy page" button with clipboard API
-- [ ] Implement "Ask AI" dropdown with configurable service links
-- [ ] Style using Starlight CSS variables
-- [ ] Client-side script for copy + dropdown interactions
+- [x] Create `components/PageActions.astro`
+- [x] Implement "Copy page" button with clipboard API
+- [x] Implement "Ask AI" dropdown with configurable service links
+- [x] Style using Starlight CSS variables
+- [x] Client-side script for copy + dropdown interactions
 
 ### Phase 5: Docs Site
 
-- [ ] Initialize Astro + Starlight docs site in `docs/`
-- [ ] Add plugin as workspace dependency
-- [ ] Create sample documentation pages
-- [ ] Verify all features work in dev and production builds
+- [x] Initialize Astro + Starlight docs site in `docs/`
+- [x] Add plugin as workspace dependency
+- [x] Create sample documentation pages
+- [x] Verify all features work in dev and production builds
 
 ---
 

@@ -1,0 +1,45 @@
+---
+title: Default Setup
+description: A demo page showing the default plugin configuration.
+---
+
+This page demonstrates the plugin with the **default configuration** — no options passed.
+
+```js
+plugins: [starlightPageAction()];
+```
+
+## What You Should See
+
+Look at the right sidebar. Above the table of contents, you should see:
+
+1. **Copy page** — Click to copy this page's markdown source to your clipboard.
+2. **Ask AI** — Click to expand a dropdown with links to ChatGPT, Claude, and T3 Chat.
+
+## Testing the Copy Button
+
+Click the **Copy page** button in the sidebar. The icon will change to a checkmark for 3 seconds to confirm the content was copied. Paste the copied text into any editor to verify it contains the raw markdown of this page.
+
+## Testing the AI Dropdown
+
+Click the **Ask AI** button to reveal the dropdown. Each link opens in a new tab with the default prompt:
+
+> Read {url}. I want to ask questions about it.
+
+The `{url}` placeholder is replaced with this page's URL automatically.
+
+## Multiple Headings for ToC
+
+The following headings exist to verify that page actions appear correctly above a populated table of contents.
+
+### Section A
+
+Content for section A. This helps demonstrate that the table of contents still works normally alongside page actions.
+
+### Section B
+
+Content for section B. The plugin does not interfere with any existing Starlight features.
+
+### Section C
+
+Content for section C. Both page actions and the table of contents are visible in the right sidebar.

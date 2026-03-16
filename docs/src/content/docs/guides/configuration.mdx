@@ -1,0 +1,85 @@
+---
+title: Configuration
+description: Customize starlight-page-action with available options.
+---
+
+All configuration options are optional. The plugin works with zero configuration out of the box.
+
+## Options
+
+### `prompt`
+
+**Type:** `string`  
+**Default:** `"Read {url}. I want to ask questions about it."`
+
+The prompt template sent to AI chat services. The `{url}` placeholder is replaced with the current page's URL at runtime.
+
+```js
+starlightPageAction({
+  prompt: "Summarize {url} and help me understand the key concepts.",
+});
+```
+
+### `actions`
+
+An object controlling which action buttons are displayed.
+
+| Key       | Type      | Default | Description                          |
+|-----------|-----------|---------|--------------------------------------|
+| `copy`    | `boolean` | `true`  | Show the "Copy page" button.         |
+| `chatgpt` | `boolean` | `true`  | Show "Open in ChatGPT" in the dropdown. |
+| `claude`  | `boolean` | `true`  | Show "Open in Claude" in the dropdown.  |
+| `t3chat`  | `boolean` | `true`  | Show "Open in T3 Chat" in the dropdown. |
+
+```js
+starlightPageAction({
+  actions: {
+    copy: true,
+    chatgpt: true,
+    claude: false, // Hide Claude option
+    t3chat: false, // Hide T3 Chat option
+  },
+});
+```
+
+## Per-Page Opt-Out
+
+You can disable page actions on individual pages by setting `pageActions: false` in the page's frontmatter:
+
+```md
+---
+title: My Private Page
+pageActions: false
+---
+
+This page will not show any page action buttons.
+```
+
+All other pages will continue to show actions as normal. See the [disabled actions example](/examples/disabled-page/) for a live demo.
+
+## Full Example
+
+```js
+import { defineConfig } from "astro/config";
+import starlight from "@astrojs/starlight";
+import starlightPageAction from "starlight-page-action";
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      title: "My Docs",
+      plugins: [
+        starlightPageAction({
+          prompt: "Read {url} and explain it simply.",
+          actions: {
+            copy: true,
+            chatgpt: true,
+            claude: true,
+            t3chat: false,
+          },
+        }),
+      ],
+    }),
+  ],
+});
+```
