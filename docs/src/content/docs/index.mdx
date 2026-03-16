@@ -1,14 +1,14 @@
 ---
-title: Starlight Page Action
+title: Starlight Page Context Action
 description: A Starlight plugin that adds page action buttons to the right sidebar.
 ---
 
-**starlight-page-action** is a [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the **right sidebar, above the table of contents**.
+**starlight-page-context-action** is a [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the **right sidebar, above the table of contents**.
 
 ## Features
 
 - **Copy page** — Copies the raw markdown content of the current page to your clipboard.
-- **Ask AI** — Opens the page in ChatGPT, Claude, or T3 Chat with a configurable prompt.
+- **Open in Chat** — Opens the page in ChatGPT, Claude, or T3 Chat with a configurable prompt.
 - **Zero-config** — Works out of the box with sensible defaults.
 - **Per-page opt-out** — Disable actions on specific pages via frontmatter.
 
@@ -17,19 +17,19 @@ description: A Starlight plugin that adds page action buttons to the right sideb
 Install the plugin in your Starlight project:
 
 ```bash
-npm install starlight-page-action
+npm install starlight-page-context-action
 ```
 
 Add it to your `astro.config.mjs`:
 
 ```js
-import starlightPageAction from "starlight-page-action";
+import starlightPageContextAction from "starlight-page-context-action";
 
 export default defineConfig({
   integrations: [
     starlight({
       title: "My Docs",
-      plugins: [starlightPageAction()],
+      plugins: [starlightPageContextAction()],
     }),
   ],
 });
@@ -39,4 +39,4 @@ Check the sidebar for **Page Actions** — you should see the "Copy page" and "A
 
 ## How It Works
 
-The plugin overrides Starlight's `PageSidebar` component to inject a `PageActions` component before the table of contents. Raw markdown files are copied to the build output so the "Copy page" button can fetch and copy the source content.
+The plugin overrides Starlight's `PageSidebar` component to inject a `pageContextActions` component before the table of contents. Raw markdown files are copied to the build output so the "Copy page" button can fetch and copy the source content.

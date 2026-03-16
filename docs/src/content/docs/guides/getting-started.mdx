@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Learn how to install and set up starlight-page-action in your Starlight project.
+description: Learn how to install and set up starlight-page-context-action in your Starlight project.
 ---
 
 ## Prerequisites
@@ -12,15 +12,15 @@ You need an existing [Starlight](https://starlight.astro.build/) project. If you
 Install the plugin using your preferred package manager:
 
 ```bash
-npm install starlight-page-action
+npm install starlight-page-context-action
 ```
 
 ```bash
-pnpm add starlight-page-action
+pnpm add starlight-page-context-action
 ```
 
 ```bash
-yarn add starlight-page-action
+yarn add starlight-page-context-action
 ```
 
 ## Setup
@@ -30,13 +30,13 @@ Add the plugin to your Starlight configuration in `astro.config.mjs`:
 ```js
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import starlightPageAction from "starlight-page-action";
+import starlightPageContextAction from "starlight-page-context-action";
 
 export default defineConfig({
   integrations: [
     starlight({
       title: "My Docs",
-      plugins: [starlightPageAction()],
+      plugins: [starlightPageContextAction()],
     }),
   ],
 });
@@ -45,7 +45,7 @@ export default defineConfig({
 That's it! The plugin will automatically:
 
 1. Add a **"Copy page"** button that copies the raw markdown of the current page
-2. Add an **"Ask AI"** dropdown with links to ChatGPT, Claude, and T3 Chat
+2. Add an **"Open in Chat"** dropdown with links to ChatGPT, Claude, and T3 Chat
 3. Place both actions in the right sidebar above the table of contents
 
 ## Verifying the Setup

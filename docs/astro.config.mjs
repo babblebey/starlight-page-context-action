@@ -1,17 +1,17 @@
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import starlightPageAction from "starlight-page-action";
+import starlightPageContextAction from "starlight-page-context-action";
 
 export default defineConfig({
   integrations: [
     starlight({
-      title: "Starlight Page Action",
-      plugins: [starlightPageAction()],
+      title: "Starlight Page Context Action",
+      plugins: [starlightPageContextAction()],
       social: [
         {
           icon: "github",
           label: "GitHub",
-          href: "https://github.com/babblebey/starlight-page-action",
+          href: "https://github.com/babblebey/starlight-page-context-action",
         },
       ],
       sidebar: [

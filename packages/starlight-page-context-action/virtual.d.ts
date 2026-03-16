@@ -1,4 +1,4 @@
-declare module "virtual:starlight-page-action-config" {
+declare module "virtual:starlight-page-context-action-config" {
   const config: {
     prompt: string;
     position: "above-toc" | "below-toc";

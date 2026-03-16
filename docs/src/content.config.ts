@@ -7,7 +7,7 @@ export const collections = {
     loader: docsLoader(),
     schema: docsSchema({
       extend: z.object({
-        pageActions: z.boolean().optional(),
+        pageContextActions: z.boolean().optional(),
       }),
     }),
   }),

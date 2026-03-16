@@ -1,7 +1,7 @@
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import virtual from "vite-plugin-virtual";
 
-/** @type {import('./index.js').StarlightPageActionConfig} */
+/** @type {import('./index.js').StarlightPageContextActionConfig} */
 const defaultConfig = {
   prompt: "Read {url}. I want to ask questions about it.",
   position: "above-toc",
@@ -28,10 +28,10 @@ function cleanMarkdown(content) {
 }
 
 /**
- * @param {Partial<import('./index.js').StarlightPageActionConfig>} [userConfig]
+ * @param {Partial<import('./index.js').StarlightPageContextActionConfig>} [userConfig]
  * @returns {import('@astrojs/starlight/types').StarlightPlugin}
  */
-export default function starlightPageAction(userConfig = {}) {
+export default function starlightPageContextAction(userConfig = {}) {
   const config = {
     prompt: userConfig.prompt ?? defaultConfig.prompt,
     position: userConfig.position ?? defaultConfig.position,
@@ -43,7 +43,7 @@ export default function starlightPageAction(userConfig = {}) {
   };
 
   return {
-    name: "starlight-page-action",
+    name: "starlight-page-context-action",
     hooks: {
       "config:setup"({ updateConfig, addIntegration, config: starlightConfig, logger }) {
         const anyActionEnabled = Object.values(config.actions).some(Boolean);
@@ -54,14 +54,14 @@ export default function starlightPageAction(userConfig = {}) {
         }
 
         addIntegration({
-          name: "starlight-page-action-integration",
+          name: "starlight-page-context-action-integration",
           hooks: {
             "astro:config:setup"({ updateConfig: updateAstroConfig }) {
               updateAstroConfig({
                 vite: {
                   plugins: [
                     virtual({
-                      "virtual:starlight-page-action-config": `export default ${JSON.stringify(config)}`,
+                      "virtual:starlight-page-context-action-config": `export default ${JSON.stringify(config)}`,
                     }),
                     ...(config.actions.copy
                       ? [
@@ -69,7 +69,7 @@ export default function starlightPageAction(userConfig = {}) {
                             targets: [
                               {
                                 src: "src/content/docs/**/*.{md,mdx}",
-                                dest: "_page-action-raw",
+                                dest: "_page-context-action-raw",
                                 transform: {
                                   encoding: "utf-8",
                                   handler: (content) => cleanMarkdown(content),
@@ -92,7 +92,7 @@ export default function starlightPageAction(userConfig = {}) {
             ...starlightConfig.components,
             PageSidebar:
               starlightConfig.components?.PageSidebar ??
-              "starlight-page-action/overrides/PageSidebar.astro",
+              "starlight-page-context-action/overrides/PageSidebar.astro",
           },
         });
       },

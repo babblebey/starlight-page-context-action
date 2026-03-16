@@ -1,6 +1,6 @@
 import type { StarlightPlugin } from "@astrojs/starlight/types";
 
-export interface StarlightPageActionActions {
+export interface StarlightPageContextActionActions {
   /** Show "Copy page" button. @default true */
   copy?: boolean;
   /** Show "Open in ChatGPT" in the AI dropdown. @default true */
@@ -11,7 +11,7 @@ export interface StarlightPageActionActions {
   t3chat?: boolean;
 }
 
-export interface StarlightPageActionConfig {
+export interface StarlightPageContextActionConfig {
   /**
    * Prompt template for AI chat services.
    * `{url}` is replaced with the current page URL.
@@ -31,9 +31,9 @@ export interface StarlightPageActionConfig {
    */
   layout?: "spread" | "compact";
   /** Configure which action buttons to show. */
-  actions?: StarlightPageActionActions;
+  actions?: StarlightPageContextActionActions;
 }
 
-export default function starlightPageAction(
-  config?: Partial<StarlightPageActionConfig>
+export default function starlightPageContextAction(
+  config?: Partial<StarlightPageContextActionConfig>
 ): StarlightPlugin;

@@ -1,6 +1,6 @@
 ---
 title: Configuration
-description: Customize starlight-page-action with available options.
+description: Customize starlight-page-context-action with available options.
 ---
 
 All configuration options are optional. The plugin works with zero configuration out of the box.
@@ -15,7 +15,7 @@ All configuration options are optional. The plugin works with zero configuration
 The prompt template sent to AI chat services. The `{url}` placeholder is replaced with the current page's URL at runtime.
 
 ```js
-starlightPageAction({
+starlightPageContextAction({
   prompt: "Summarize {url} and help me understand the key concepts.",
 });
 ```
@@ -28,7 +28,7 @@ starlightPageAction({
 Controls where the page action buttons are rendered in the right sidebar relative to the table of contents.
 
 ```js
-starlightPageAction({
+starlightPageContextAction({
   position: "below-toc",
 });
 ```
@@ -44,7 +44,7 @@ Controls the visual layout of the action buttons.
 - `"compact"` — A primary "Copy page" pill button is shown inline with a kebab (⋮) menu containing all actions.
 
 ```js
-starlightPageAction({
+starlightPageContextAction({
   layout: "compact",
 });
 ```
@@ -61,7 +61,7 @@ An object controlling which action buttons are displayed.
 | `t3chat`  | `boolean` | `true`  | Show "Open in T3 Chat" in the dropdown. |
 
 ```js
-starlightPageAction({
+starlightPageContextAction({
   actions: {
     copy: true,
     chatgpt: true,
@@ -73,12 +73,12 @@ starlightPageAction({
 
 ## Per-Page Opt-Out
 
-You can disable page actions on individual pages by setting `pageActions: false` in the page's frontmatter:
+You can disable page actions on individual pages by setting `pageContextActions: false` in the page's frontmatter:
 
 ```md
 ---
 title: My Private Page
-pageActions: false
+pageContextActions: false
 ---
 
 This page will not show any page action buttons.
@@ -91,14 +91,14 @@ All other pages will continue to show actions as normal. See the [disabled actio
 ```js
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
-import starlightPageAction from "starlight-page-action";
+import starlightPageContextAction from "starlight-page-context-action";
 
 export default defineConfig({
   integrations: [
     starlight({
       title: "My Docs",
       plugins: [
-        starlightPageAction({
+        starlightPageContextAction({
           prompt: "Read {url} and explain it simply.",
           position: "above-toc",
           layout: "spread",

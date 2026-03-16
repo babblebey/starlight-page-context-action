@@ -6,7 +6,7 @@ description: A demo page showing the default plugin configuration.
 This page demonstrates the plugin with the **default configuration** — no options passed.
 
 ```js
-plugins: [starlightPageAction()];
+plugins: [starlightPageContextAction()];
 ```
 
 ## What You Should See
@@ -14,7 +14,7 @@ plugins: [starlightPageAction()];
 Look at the right sidebar. Above the table of contents, you should see:
 
 1. **Copy page** — Click to copy this page's markdown source to your clipboard.
-2. **Ask AI** — Click to expand a dropdown with links to ChatGPT, Claude, and T3 Chat.
+2. **Open in Chat** — Click to expand a dropdown with links to ChatGPT, Claude, and T3 Chat.
 
 ## Testing the Copy Button
 
@@ -22,7 +22,7 @@ Click the **Copy page** button in the sidebar. The icon will change to a checkma
 
 ## Testing the AI Dropdown
 
-Click the **Ask AI** button to reveal the dropdown. Each link opens in a new tab with the default prompt:
+Click the **Open in Chat** button to reveal the dropdown. Each link opens in a new tab with the default prompt:
 
 > Read {url}. I want to ask questions about it.
 
