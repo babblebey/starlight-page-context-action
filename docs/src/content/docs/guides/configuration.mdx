@@ -20,6 +20,19 @@ starlightPageAction({
 });
 ```
 
+### `position`
+
+**Type:** `"above-toc" | "below-toc"`  
+**Default:** `"above-toc"`
+
+Controls where the page action buttons are rendered in the right sidebar relative to the table of contents.
+
+```js
+starlightPageAction({
+  position: "below-toc",
+});
+```
+
 ### `actions`
 
 An object controlling which action buttons are displayed.
@@ -71,6 +84,7 @@ export default defineConfig({
       plugins: [
         starlightPageAction({
           prompt: "Read {url} and explain it simply.",
+          position: "above-toc",
           actions: {
             copy: true,
             chatgpt: true,

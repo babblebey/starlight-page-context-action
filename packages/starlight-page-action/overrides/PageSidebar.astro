@@ -1,11 +1,13 @@
 ---
 import Default from "@astrojs/starlight/components/PageSidebar.astro";
 import PageActions from "../components/PageActions.astro";
+import config from "virtual:starlight-page-action-config";
 
 const showPageActions = Astro.locals.starlightRoute.entry.data.pageActions !== false;
+const position = config.position ?? "above-toc";
 ---
 
-{showPageActions && (
+{showPageActions && position === "above-toc" && (
   <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
     <div class="sl-container">
       <PageActions />
@@ -13,3 +15,10 @@ const showPageActions = Astro.locals.starlightRoute.entry.data.pageActions !== f
   </div>
 )}
 <Default><slot /></Default>
+{showPageActions && position === "below-toc" && (
+  <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
+    <div class="sl-container">
+      <PageActions />
+    </div>
+  </div>
+)}

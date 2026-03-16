@@ -18,6 +18,11 @@ export interface StarlightPageActionConfig {
    * @default "Read {url}. I want to ask questions about it."
    */
   prompt?: string;
+  /**
+   * Position of the page actions relative to the table of contents.
+   * @default "above-toc"
+   */
+  position?: "above-toc" | "below-toc";
   /** Configure which action buttons to show. */
   actions?: StarlightPageActionActions;
 }
