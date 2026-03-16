@@ -8,17 +8,33 @@ const position = config.position ?? "above-toc";
 ---
 
 {showPageActions && position === "above-toc" && (
-  <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
-    <div class="sl-container">
-      <PageActions />
+  <>
+    <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
+      <div class="sl-container">
+        <PageActions />
+      </div>
     </div>
-  </div>
+    <hr class="page-actions-separator sl-hidden lg:sl-block" />
+  </>
 )}
+
 <Default><slot /></Default>
+
 {showPageActions && position === "below-toc" && (
-  <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
-    <div class="sl-container">
-      <PageActions />
+  <>
+    <hr class="page-actions-separator sl-hidden lg:sl-block" />
+    <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
+      <div class="sl-container">
+        <PageActions />
+      </div>
     </div>
-  </div>
+  </>
 )}
+
+<style>
+  .page-actions-separator {
+    border: none;
+    border-top: 1px solid var(--sl-color-gray-5);
+    margin: 0 var(--sl-sidebar-pad-x);
+  }
+</style>
