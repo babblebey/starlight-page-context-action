@@ -202,6 +202,17 @@ const isCompact = layout === "compact";
     });
   }
 
+  // --- Popup direction helper ---
+  function positionPopup(triggerEl, popupEl) {
+    popupEl.classList.remove('popup-below');
+    const rect = triggerEl.getBoundingClientRect();
+    const spaceAbove = rect.top;
+    const popupHeight = popupEl.offsetHeight || 120;
+    if (spaceAbove < popupHeight + 8) {
+      popupEl.classList.add('popup-below');
+    }
+  }
+
   // --- Spread layout: "Open in Chat" dropdown toggle ---
   const openInChatBtn = document.getElementById('page-action-open-in-chat');
   if (openInChatBtn && dropdown) {
@@ -210,6 +221,7 @@ const isCompact = layout === "compact";
       const isOpen = dropdown.style.display !== 'none';
       dropdown.style.display = isOpen ? 'none' : '';
       openInChatBtn.setAttribute('aria-expanded', String(!isOpen));
+      if (!isOpen) positionPopup(openInChatBtn, dropdown);
     });
 
     document.addEventListener('click', (e) => {
@@ -228,6 +240,7 @@ const isCompact = layout === "compact";
       const isOpen = dropdown.style.display !== 'none';
       dropdown.style.display = isOpen ? 'none' : '';
       kebabBtn.setAttribute('aria-expanded', String(!isOpen));
+      if (!isOpen) positionPopup(kebabBtn, dropdown);
     });
 
     document.addEventListener('click', (e) => {
@@ -267,6 +280,11 @@ const isCompact = layout === "compact";
     border-radius: 0.5rem;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     z-index: 10;
+  }
+
+  .page-action-popup.popup-below {
+    bottom: auto;
+    top: calc(100% + 0.5rem);
   }
 
   .page-action-popup-item {
