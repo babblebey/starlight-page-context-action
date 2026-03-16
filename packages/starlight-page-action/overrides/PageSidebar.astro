@@ -6,7 +6,7 @@ const showPageActions = Astro.locals.starlightRoute.entry.data.pageActions !== f
 ---
 
 {showPageActions && (
-  <div class="right-sidebar-panel sl-hidden lg:sl-block">
+  <div class="right-sidebar-panel sl-hidden lg:sl-block" style="padding: 1rem var(--sl-sidebar-pad-x);">
     <div class="sl-container">
       <PageActions />
     </div>
