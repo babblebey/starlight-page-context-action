@@ -273,9 +273,9 @@ starlightPageAction(userConfig?) → StarlightPlugin
 
 ### Phase 3: PageSidebar Override
 
-- [ ] Create `overrides/PageSidebar.astro`
-- [ ] Import and render default `PageSidebar`
-- [ ] Conditionally render `PageActions` based on frontmatter
+- [x] Create `overrides/PageSidebar.astro`
+- [x] Import and render default `PageSidebar`
+- [x] Conditionally render `PageActions` based on frontmatter
 
 ### Phase 4: PageActions Component
 

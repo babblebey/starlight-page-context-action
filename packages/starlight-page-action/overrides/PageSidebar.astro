@@ -1,5 +1,15 @@
 ---
 import Default from "@astrojs/starlight/components/PageSidebar.astro";
+import PageActions from "../components/PageActions.astro";
+
+const showPageActions = Astro.locals.starlightRoute.entry.data.pageActions !== false;
 ---
 
+{showPageActions && (
+  <div class="right-sidebar-panel sl-hidden lg:sl-block">
+    <div class="sl-container">
+      <PageActions />
+    </div>
+  </div>
+)}
 <Default><slot /></Default>
