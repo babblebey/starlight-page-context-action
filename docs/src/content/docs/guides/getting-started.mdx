@@ -3,6 +3,8 @@ title: Getting Started
 description: Learn how to install and set up starlight-page-context-action in your Starlight project.
 ---
 
+import { Tabs, TabItem, Steps } from "@astrojs/starlight/components";
+
 ## Prerequisites
 
 You need an existing [Starlight](https://starlight.astro.build/) project. If you don't have one yet, follow the [Starlight Getting Started guide](https://starlight.astro.build/getting-started/) to create one.
@@ -11,17 +13,17 @@ You need an existing [Starlight](https://starlight.astro.build/) project. If you
 
 Install the plugin using your preferred package manager:
 
-```bash
-npm install starlight-page-context-action
-```
-
-```bash
-pnpm add starlight-page-context-action
-```
-
-```bash
-yarn add starlight-page-context-action
-```
+<Tabs syncKey="pkg">
+  <TabItem value="npm" label="npm">
+    ```bash npm install starlight-page-context-action ```
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    ```bash pnpm add starlight-page-context-action ```
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    ```bash yarn add starlight-page-context-action ```
+  </TabItem>
+</Tabs>
 
 ## Setup
 
