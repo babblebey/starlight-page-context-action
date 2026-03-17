@@ -2,6 +2,8 @@
 
 A [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the right sidebar — making utility actions like **copy page**, **open in AI chat**, and **scroll to top** always accessible alongside the table of contents.
 
+**[Demo & Docs](https://starlight-page-context-action.vercel.app)**
+
 ## Features
 
 - **Copy Page** — Copies the raw markdown content to clipboard with visual feedback
