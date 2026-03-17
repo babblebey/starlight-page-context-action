@@ -111,6 +111,8 @@ This disables actions on both desktop (sidebar) and mobile (mobile bar). All oth
 
 ## Full Example
 
+Here's the exact configuration used on this documentation site. It places the action buttons below the table of contents and makes them sticky, while relying on defaults for everything else:
+
 ```js
 import { defineConfig } from "astro/config";
 import starlight from "@astrojs/starlight";
@@ -119,19 +121,19 @@ import starlightPageContextAction from "starlight-page-context-action";
 export default defineConfig({
   integrations: [
     starlight({
-      title: "My Docs",
+      title: "Starlight Page Context Action",
       plugins: [
         starlightPageContextAction({
-          prompt: "Read {url} and explain it simply.",
-          position: "above-toc",
-          layout: "spread",
-          sticky: false,
+          prompt: "Read {url}. I want to ask questions about it.", // default
+          position: "below-toc",
+          layout: "spread", // default
+          sticky: true,
           actions: {
-            copy: true,
-            chatgpt: true,
-            claude: true,
-            t3chat: false,
-            scrollTop: true,
+            copy: true, // default
+            chatgpt: true, // default
+            claude: true, // default
+            t3chat: true, // default
+            scrollTop: true, // default
           },
         }),
       ],
