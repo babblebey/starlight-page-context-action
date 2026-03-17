@@ -4,6 +4,7 @@ import PageContextActions from "../components/PageContextActions.astro";
 import config from "virtual:starlight-page-context-action-config";
 
 const showPageContextActions = Astro.locals.starlightRoute.entry.data.pageContextActions !== false;
+const entryFilePath = Astro.locals.starlightRoute.entry.filePath;
 const position = config.position ?? "above-toc";
 const sticky = config.sticky ?? false;
 const wrapperClasses = [
@@ -19,7 +20,7 @@ const wrapperClasses = [
 {showPageContextActions && position === "above-toc" && (
   <div class={wrapperClasses}>
     <div class="sl-container">
-      <PageContextActions />
+      <PageContextActions entryFilePath={entryFilePath} />
     </div>
   </div>
 )}
@@ -29,7 +30,7 @@ const wrapperClasses = [
 {showPageContextActions && position === "below-toc" && (
   <div class={wrapperClasses}>
     <div class="sl-container">
-      <PageContextActions />
+      <PageContextActions entryFilePath={entryFilePath} />
     </div>
   </div>
 )}

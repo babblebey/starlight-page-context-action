@@ -1,9 +1,16 @@
 ---
 import config from "virtual:starlight-page-context-action-config";
 
+interface Props {
+  entryFilePath: string;
+}
+
+const { entryFilePath } = Astro.props;
 const { actions, prompt, layout } = config;
 const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
 const isCompact = layout === "compact";
+const base = import.meta.env.BASE_URL;
+const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
 ---
 
 {isCompact && (
@@ -129,7 +136,7 @@ const isCompact = layout === "compact";
   </div>
 )}
 
-<script is:inline define:vars={{ prompt }}>
+<script is:inline define:vars={{ prompt, base, rawSourcePath }}>
 (function() {
   // --- Shared copy handler ---
   function handleCopy(btn) {
@@ -139,30 +146,11 @@ const isCompact = layout === "compact";
       const iconError = btn.querySelector('.icon-error');
 
       try {
-        const pathname = window.location.pathname.replace(/\/$/, '');
-        const segments = pathname.split('/').filter(Boolean);
-        const basePath = segments.slice(0, -1).join('/');
-
-        let rawText = null;
-        for (const ext of ['mdx', 'md']) {
-          const rawUrl = `/${basePath ? basePath + '/' : ''}_page-context-action-raw/src/content/docs/${segments.join('/')}.${ext}`;
-          try {
-            const res = await fetch(rawUrl);
-            if (res.ok) { rawText = await res.text(); break; }
-          } catch { /* try next */ }
-        }
-
-        if (!rawText) {
-          for (const ext of ['mdx', 'md']) {
-            const rawUrl = `/${basePath ? basePath + '/' : ''}_page-context-action-raw/src/content/docs/${segments.join('/')}/index.${ext}`;
-            try {
-              const res = await fetch(rawUrl);
-              if (res.ok) { rawText = await res.text(); break; }
-            } catch { /* try next */ }
-          }
-        }
-
-        if (!rawText) throw new Error('Could not fetch page source');
+        const normalizedBase = base.replace(/\/$/, '');
+        const rawUrl = (normalizedBase ? normalizedBase + '/' : '/') + rawSourcePath;
+        const res = await fetch(rawUrl);
+        if (!res.ok) throw new Error('Could not fetch page source');
+        const rawText = await res.text();
         await navigator.clipboard.writeText(rawText);
 
         if (iconCopy) iconCopy.style.display = 'none';
