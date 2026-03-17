@@ -3,6 +3,8 @@ title: Starlight Page Context Action
 description: A Starlight plugin that adds page action buttons to the right sidebar.
 ---
 
+import { Tabs, TabItem, Steps } from "@astrojs/starlight/components";
+
 **starlight-page-context-action** is a [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the **right sidebar, above/below the table of contents**.
 
 ## Features
@@ -18,9 +20,24 @@ description: A Starlight plugin that adds page action buttons to the right sideb
 
 Install the plugin in your Starlight project:
 
-```bash
-npm install starlight-page-context-action
-```
+{/* prettier-ignore */}
+<Tabs syncKey="pkg">
+  <TabItem value="npm" label="npm">
+    ```bash
+    npm install starlight-page-context-action
+    ```
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    ```bash
+    pnpm add starlight-page-context-action
+    ```
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    ```bash
+    yarn add starlight-page-context-action
+    ```
+  </TabItem>
+</Tabs>
 
 Add it to your `astro.config.mjs`:
 
