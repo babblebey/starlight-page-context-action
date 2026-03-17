@@ -3,13 +3,16 @@ title: Starlight Page Context Action
 description: A Starlight plugin that adds page action buttons to the right sidebar.
 ---
 
-**starlight-page-context-action** is a [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the **right sidebar, above the table of contents**.
+import { Tabs, TabItem, Steps } from "@astrojs/starlight/components";
+
+**starlight-page-context-action** is a [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the **right sidebar, above/below the table of contents**.
 
 ## Features
 
 - **Copy page** — Copies the raw markdown content of the current page to your clipboard.
 - **Open in Chat** — Opens the page in ChatGPT, Claude, or T3 Chat with a configurable prompt.
 - **Scroll to top** — Smoothly scrolls back to the top of the page.
+- **Mobile support** — Actions are also available on mobile via a compact dropdown in the mobile table of contents bar.
 - **Zero-config** — Works out of the box with sensible defaults.
 - **Per-page opt-out** — Disable actions on specific pages via frontmatter.
 
@@ -17,9 +20,24 @@ description: A Starlight plugin that adds page action buttons to the right sideb
 
 Install the plugin in your Starlight project:
 
-```bash
-npm install starlight-page-context-action
-```
+{/* prettier-ignore */}
+<Tabs syncKey="pkg">
+  <TabItem value="npm" label="npm">
+    ```bash
+    npm install starlight-page-context-action
+    ```
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    ```bash
+    pnpm add starlight-page-context-action
+    ```
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    ```bash
+    yarn add starlight-page-context-action
+    ```
+  </TabItem>
+</Tabs>
 
 Add it to your `astro.config.mjs`:
 
@@ -40,4 +58,4 @@ Check the sidebar for **Page Actions** — you should see the "Copy page", "Open
 
 ## How It Works
 
-The plugin overrides Starlight's `PageSidebar` component to inject a `PageContextActions` component before the table of contents. Raw markdown files are copied to the build output so the "Copy page" button can fetch and copy the source content.
+The plugin overrides Starlight's `PageSidebar` component to inject a `PageContextActions` component before the table of contents. It also overrides the `MobileTableOfContents` component to add a compact "Page Actions" dropdown alongside the mobile table of contents toggle — so actions are accessible on all screen sizes. Raw markdown files are copied to the build output so the "Copy page" button can fetch and copy the source content.

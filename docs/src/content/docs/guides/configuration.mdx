@@ -86,6 +86,14 @@ starlightPageContextAction({
 });
 ```
 
+## Mobile Support
+
+The plugin automatically adds a **"Page Actions"** dropdown to the mobile table of contents bar. On small screens, the actions appear as a compact toggle pill (styled identically to Starlight's "On this page" toggle) that opens a dropdown with all enabled actions.
+
+The mobile dropdown and the table of contents toggle are mutually exclusive — opening one automatically closes the other.
+
+No additional configuration is needed. The same `actions` settings apply to both desktop and mobile views, and the `pageContextActions: false` frontmatter opt-out disables actions on both.
+
 ## Per-Page Opt-Out
 
 You can disable page actions on individual pages by setting `pageContextActions: false` in the page's frontmatter:
@@ -99,9 +107,11 @@ pageContextActions: false
 This page will not show any page action buttons.
 ```
 
-All other pages will continue to show actions as normal. See the [disabled actions example](/examples/disabled-page/) for a live demo.
+This disables actions on both desktop (sidebar) and mobile (mobile bar). All other pages will continue to show actions as normal. See the [disabled actions example](/examples/disabled-page/) for a live demo.
 
 ## Full Example
+
+Here's the exact configuration used on this documentation site. It places the action buttons below the table of contents and makes them sticky, while relying on defaults for everything else:
 
 ```js
 import { defineConfig } from "astro/config";
@@ -111,19 +121,19 @@ import starlightPageContextAction from "starlight-page-context-action";
 export default defineConfig({
   integrations: [
     starlight({
-      title: "My Docs",
+      title: "Starlight Page Context Action",
       plugins: [
         starlightPageContextAction({
-          prompt: "Read {url} and explain it simply.",
-          position: "above-toc",
-          layout: "spread",
-          sticky: false,
+          prompt: "Read {url}. I want to ask questions about it.", // default
+          position: "below-toc",
+          layout: "spread", // default
+          sticky: true,
           actions: {
-            copy: true,
-            chatgpt: true,
-            claude: true,
-            t3chat: false,
-            scrollTop: true,
+            copy: true, // default
+            chatgpt: true, // default
+            claude: true, // default
+            t3chat: true, // default
+            scrollTop: true, // default
           },
         }),
       ],

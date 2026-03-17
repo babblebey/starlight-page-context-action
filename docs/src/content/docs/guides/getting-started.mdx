@@ -3,6 +3,8 @@ title: Getting Started
 description: Learn how to install and set up starlight-page-context-action in your Starlight project.
 ---
 
+import { Tabs, TabItem, Steps } from "@astrojs/starlight/components";
+
 ## Prerequisites
 
 You need an existing [Starlight](https://starlight.astro.build/) project. If you don't have one yet, follow the [Starlight Getting Started guide](https://starlight.astro.build/getting-started/) to create one.
@@ -11,17 +13,24 @@ You need an existing [Starlight](https://starlight.astro.build/) project. If you
 
 Install the plugin using your preferred package manager:
 
-```bash
-npm install starlight-page-context-action
-```
-
-```bash
-pnpm add starlight-page-context-action
-```
-
-```bash
-yarn add starlight-page-context-action
-```
+{/* prettier-ignore */}
+<Tabs syncKey="pkg">
+  <TabItem value="npm" label="npm">
+    ```bash
+    npm install starlight-page-context-action
+    ```
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
+    ```bash
+    pnpm add starlight-page-context-action
+    ```
+  </TabItem>
+  <TabItem value="yarn" label="yarn">
+    ```bash
+    yarn add starlight-page-context-action
+    ```
+  </TabItem>
+</Tabs>
 
 ## Setup
 
@@ -48,10 +57,13 @@ That's it! The plugin will automatically:
 2. Add an **"Open in Chat"** dropdown with links to ChatGPT, Claude, and T3 Chat
 3. Add a **"Scroll to top"** button that smoothly scrolls back to the top of the page
 4. Place all actions in the right sidebar above the table of contents
+5. Add a **mobile "Page Actions" dropdown** next to the mobile table of contents toggle
 
 ## Verifying the Setup
 
 Start your dev server and look at the right sidebar. You should see a **"Page Actions"** section above the table of contents with the copy and AI buttons.
+
+On mobile, resize your browser or use a mobile device — you should see a **"Page Actions"** toggle in the mobile bar alongside the "On this page" table of contents toggle.
 
 ```bash
 npm run dev

@@ -30,6 +30,7 @@ export default defineConfig({
           autogenerate: { directory: "examples" },
         },
       ],
+      customCss: ["./src/styles/global.css"],
     }),
   ],
 });

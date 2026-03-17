@@ -1,0 +1,5 @@
+@layer starlight;
+
+.site-title {
+  color: var(--sl-color-white);
+}
