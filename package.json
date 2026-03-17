@@ -4,9 +4,18 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter docs dev",
-    "build": "pnpm --filter docs build"
+    "build": "pnpm --filter docs build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

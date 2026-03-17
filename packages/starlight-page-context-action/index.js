@@ -48,11 +48,16 @@ export default function starlightPageContextAction(userConfig = {}) {
   return {
     name: "starlight-page-context-action",
     hooks: {
-      "config:setup"({ updateConfig, addIntegration, config: starlightConfig, logger }) {
+      "config:setup"({
+        updateConfig,
+        addIntegration,
+        config: starlightConfig,
+        logger,
+      }) {
         const anyActionEnabled = Object.values(config.actions).some(Boolean);
         if (!anyActionEnabled) {
           logger.warn(
-            "All page actions are disabled. The plugin will not render any UI."
+            "All page actions are disabled. The plugin will not render any UI.",
           );
         }
 

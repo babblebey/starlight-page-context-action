@@ -61,13 +61,13 @@ starlightPageContextAction({
 
 ### Options
 
-| Option | Type | Default | Description |
-| --- | --- | --- | --- |
-| `prompt` | `string` | `"Read {url}. I want to ask questions about it."` | Prompt template for AI services. `{url}` is replaced with the current page URL. |
-| `position` | `"above-toc"` \| `"below-toc"` | `"above-toc"` | Position of the actions relative to the table of contents. |
-| `layout` | `"spread"` \| `"compact"` | `"spread"` | Layout style. `"spread"` shows all buttons vertically. `"compact"` shows a primary copy button inline with a kebab menu for AI actions. |
-| `sticky` | `boolean` | `false` | Whether the actions stick to the top/bottom of the sidebar on scroll. |
-| `actions` | `object` | All `true` | Toggle individual action buttons on or off. |
+| Option     | Type                           | Default                                           | Description                                                                                                                             |
+| ---------- | ------------------------------ | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `prompt`   | `string`                       | `"Read {url}. I want to ask questions about it."` | Prompt template for AI services. `{url}` is replaced with the current page URL.                                                         |
+| `position` | `"above-toc"` \| `"below-toc"` | `"above-toc"`                                     | Position of the actions relative to the table of contents.                                                                              |
+| `layout`   | `"spread"` \| `"compact"`      | `"spread"`                                        | Layout style. `"spread"` shows all buttons vertically. `"compact"` shows a primary copy button inline with a kebab menu for AI actions. |
+| `sticky`   | `boolean`                      | `false`                                           | Whether the actions stick to the top/bottom of the sidebar on scroll.                                                                   |
+| `actions`  | `object`                       | All `true`                                        | Toggle individual action buttons on or off.                                                                                             |
 
 ### Disabling on a Specific Page
 

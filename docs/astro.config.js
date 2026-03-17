@@ -6,10 +6,12 @@ export default defineConfig({
   integrations: [
     starlight({
       title: "Starlight Page Context Action",
-      plugins: [starlightPageContextAction({
-        position: "below-toc",
-        sticky: true
-      })],
+      plugins: [
+        starlightPageContextAction({
+          position: "below-toc",
+          sticky: true,
+        }),
+      ],
       social: [
         {
           icon: "github",
