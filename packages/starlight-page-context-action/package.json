@@ -1,6 +1,6 @@
 {
   "name": "starlight-page-context-action",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "A Starlight plugin that adds page action buttons to the right sidebar above the table of contents.",
   "type": "module",
   "author": "babblebey",
