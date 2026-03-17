@@ -1,12 +1,22 @@
 {
-  "name": "starlight-page-action-monorepo",
+  "name": "starlight-page-context-action-monorepo",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@9.15.9",
   "scripts": {
     "dev": "pnpm --filter docs dev",
-    "build": "pnpm --filter docs build"
+    "build": "pnpm --filter docs build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
+  },
+  "devDependencies": {
+    "prettier": "^3.8.1",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

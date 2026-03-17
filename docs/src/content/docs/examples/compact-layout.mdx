@@ -1,0 +1,42 @@
+---
+title: Compact Layout
+description: A demo page showing the compact layout option.
+---
+
+This page demonstrates the plugin with the **compact layout** — where the actions are displayed as a pill button with a kebab overflow menu.
+
+To enable this layout for your site, configure the `layout` option:
+
+```js
+starlightPageContextAction({
+  layout: "compact",
+});
+```
+
+## What You Should See
+
+Look at the right sidebar. Above the table of contents, you should see:
+
+1. **Copy page** — A pill-shaped button to copy this page's markdown source.
+2. **↑ (scroll to top)** — A round button that smoothly scrolls to the top of the page.
+3. **⋮ (kebab menu)** — A round button that opens a dropdown with all available actions.
+
+## Compact vs Spread
+
+The **spread** layout (default) displays actions as a vertical list of buttons. The **compact** layout condenses them into a single row with a primary action and an overflow menu — ideal for keeping the sidebar clean.
+
+Compare this page with the [default setup example](/examples/default/) to see the difference.
+
+## Multiple Headings for ToC
+
+### Section A
+
+Content for section A. Verify the compact actions appear correctly above the table of contents.
+
+### Section B
+
+Content for section B. The kebab menu should open a dropdown with all enabled actions.
+
+### Section C
+
+Content for section C. Both the compact actions and the table of contents are visible in the right sidebar.

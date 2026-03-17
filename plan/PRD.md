@@ -265,32 +265,32 @@ starlightPageAction(userConfig?) → StarlightPlugin
 
 ### Phase 2: Plugin Core
 
-- [ ] Implement `index.js` with `starlightPageAction()` function
-- [ ] Config merging and validation logic
-- [ ] Astro integration with `vite-plugin-virtual` and `vite-plugin-static-copy`
-- [ ] `updateConfig()` call to override `PageSidebar`
-- [ ] Write `index.d.ts` and `virtual.d.ts` for TypeScript support
+- [x] Implement `index.js` with `starlightPageAction()` function
+- [x] Config merging and validation logic
+- [x] Astro integration with `vite-plugin-virtual` and `vite-plugin-static-copy`
+- [x] `updateConfig()` call to override `PageSidebar`
+- [x] Write `index.d.ts` and `virtual.d.ts` for TypeScript support
 
 ### Phase 3: PageSidebar Override
 
-- [ ] Create `overrides/PageSidebar.astro`
-- [ ] Import and render default `PageSidebar`
-- [ ] Conditionally render `PageActions` based on frontmatter
+- [x] Create `overrides/PageSidebar.astro`
+- [x] Import and render default `PageSidebar`
+- [x] Conditionally render `PageActions` based on frontmatter
 
 ### Phase 4: PageActions Component
 
-- [ ] Create `components/PageActions.astro`
-- [ ] Implement "Copy page" button with clipboard API
-- [ ] Implement "Ask AI" dropdown with configurable service links
-- [ ] Style using Starlight CSS variables
-- [ ] Client-side script for copy + dropdown interactions
+- [x] Create `components/PageActions.astro`
+- [x] Implement "Copy page" button with clipboard API
+- [x] Implement "Ask AI" dropdown with configurable service links
+- [x] Style using Starlight CSS variables
+- [x] Client-side script for copy + dropdown interactions
 
 ### Phase 5: Docs Site
 
-- [ ] Initialize Astro + Starlight docs site in `docs/`
-- [ ] Add plugin as workspace dependency
-- [ ] Create sample documentation pages
-- [ ] Verify all features work in dev and production builds
+- [x] Initialize Astro + Starlight docs site in `docs/`
+- [x] Add plugin as workspace dependency
+- [x] Create sample documentation pages
+- [x] Verify all features work in dev and production builds
 
 ---
 

@@ -1,5 +1,43 @@
 ---
-title: Welcome
+title: Starlight Page Context Action
+description: A Starlight plugin that adds page action buttons to the right sidebar.
 ---
 
-This is the demo site for **starlight-page-action**.
+**starlight-page-context-action** is a [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the **right sidebar, above the table of contents**.
+
+## Features
+
+- **Copy page** — Copies the raw markdown content of the current page to your clipboard.
+- **Open in Chat** — Opens the page in ChatGPT, Claude, or T3 Chat with a configurable prompt.
+- **Scroll to top** — Smoothly scrolls back to the top of the page.
+- **Zero-config** — Works out of the box with sensible defaults.
+- **Per-page opt-out** — Disable actions on specific pages via frontmatter.
+
+## Quick Start
+
+Install the plugin in your Starlight project:
+
+```bash
+npm install starlight-page-context-action
+```
+
+Add it to your `astro.config.mjs`:
+
+```js
+import starlightPageContextAction from "starlight-page-context-action";
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      title: "My Docs",
+      plugins: [starlightPageContextAction()],
+    }),
+  ],
+});
+```
+
+Check the sidebar for **Page Actions** — you should see the "Copy page", "Open in Chat", and "Scroll to top" buttons on the right side of this page.
+
+## How It Works
+
+The plugin overrides Starlight's `PageSidebar` component to inject a `PageContextActions` component before the table of contents. Raw markdown files are copied to the build output so the "Copy page" button can fetch and copy the source content.

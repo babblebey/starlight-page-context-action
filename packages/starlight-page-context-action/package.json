@@ -1,5 +1,5 @@
 {
-  "name": "starlight-page-action",
+  "name": "starlight-page-context-action",
   "version": "0.0.1",
   "description": "A Starlight plugin that adds page action buttons to the right sidebar above the table of contents.",
   "type": "module",
@@ -19,7 +19,7 @@
     "starlight",
     "astro",
     "plugin",
-    "page-actions",
+    "page-context-action",
     "clipboard",
     "ai"
   ],

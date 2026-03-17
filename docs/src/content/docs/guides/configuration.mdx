@@ -1,0 +1,133 @@
+---
+title: Configuration
+description: Customize starlight-page-context-action with available options.
+---
+
+All configuration options are optional. The plugin works with zero configuration out of the box.
+
+## Options
+
+### `prompt`
+
+**Type:** `string`  
+**Default:** `"Read {url}. I want to ask questions about it."`
+
+The prompt template sent to AI chat services. The `{url}` placeholder is replaced with the current page's URL at runtime.
+
+```js
+starlightPageContextAction({
+  prompt: "Summarize {url} and help me understand the key concepts.",
+});
+```
+
+### `position`
+
+**Type:** `"above-toc" | "below-toc"`  
+**Default:** `"above-toc"`
+
+Controls where the page action buttons are rendered in the right sidebar relative to the table of contents.
+
+```js
+starlightPageContextAction({
+  position: "below-toc",
+});
+```
+
+### `layout`
+
+**Type:** `"spread" | "compact"`  
+**Default:** `"spread"`
+
+Controls the visual layout of the action buttons.
+
+- `"spread"` — Buttons are displayed vertically in a list (default).
+- `"compact"` — A primary "Copy page" pill button is shown inline with a kebab (⋮) menu containing all actions.
+
+```js
+starlightPageContextAction({
+  layout: "compact",
+});
+```
+
+### `sticky`
+
+**Type:** `boolean`  
+**Default:** `false`
+
+Whether the action wrapper sticks to the top of the sidebar on scroll. When `position` is `"below-toc"`, the wrapper sticks to the bottom instead.
+
+```js
+starlightPageContextAction({
+  sticky: true,
+});
+```
+
+### `actions`
+
+An object controlling which action buttons are displayed.
+
+| Key         | Type      | Default | Description                             |
+| ----------- | --------- | ------- | --------------------------------------- |
+| `copy`      | `boolean` | `true`  | Show the "Copy page" button.            |
+| `chatgpt`   | `boolean` | `true`  | Show "Open in ChatGPT" in the dropdown. |
+| `claude`    | `boolean` | `true`  | Show "Open in Claude" in the dropdown.  |
+| `t3chat`    | `boolean` | `true`  | Show "Open in T3 Chat" in the dropdown. |
+| `scrollTop` | `boolean` | `true`  | Show a "Scroll to top" button.          |
+
+```js
+starlightPageContextAction({
+  actions: {
+    copy: true,
+    chatgpt: true,
+    claude: false, // Hide Claude option
+    t3chat: false, // Hide T3 Chat option
+    scrollTop: true, // Show scroll-to-top button
+  },
+});
+```
+
+## Per-Page Opt-Out
+
+You can disable page actions on individual pages by setting `pageContextActions: false` in the page's frontmatter:
+
+```md
+---
+title: My Private Page
+pageContextActions: false
+---
+
+This page will not show any page action buttons.
+```
+
+All other pages will continue to show actions as normal. See the [disabled actions example](/examples/disabled-page/) for a live demo.
+
+## Full Example
+
+```js
+import { defineConfig } from "astro/config";
+import starlight from "@astrojs/starlight";
+import starlightPageContextAction from "starlight-page-context-action";
+
+export default defineConfig({
+  integrations: [
+    starlight({
+      title: "My Docs",
+      plugins: [
+        starlightPageContextAction({
+          prompt: "Read {url} and explain it simply.",
+          position: "above-toc",
+          layout: "spread",
+          sticky: false,
+          actions: {
+            copy: true,
+            chatgpt: true,
+            claude: true,
+            t3chat: false,
+            scrollTop: true,
+          },
+        }),
+      ],
+    }),
+  ],
+});
+```

@@ -1,0 +1,41 @@
+---
+title: Custom Prompt
+description: An example showing how the prompt option works with AI services.
+---
+
+This page is part of a docs site that uses the default prompt configuration. In a real setup, you can customize the prompt sent to AI services.
+
+## Customizing the Prompt
+
+The `prompt` option accepts a string with a `{url}` placeholder:
+
+```js
+starlightPageContextAction({
+  prompt: "Summarize {url} and list the key takeaways.",
+});
+```
+
+When a user clicks an AI service link, `{url}` is replaced with the current page's full URL and the resulting prompt is passed as a query parameter to the chosen service.
+
+## Supported AI Services
+
+### ChatGPT
+
+Opens `https://chatgpt.com/?q=<prompt>` in a new tab.
+
+### Claude
+
+Opens `https://claude.ai/new?q=<prompt>` in a new tab.
+
+### T3 Chat
+
+Opens `https://t3.chat/new?q=<prompt>` in a new tab.
+
+## Prompt Ideas
+
+Here are some useful prompt templates:
+
+- `"Read {url}. I want to ask questions about it."` — General Q&A (default)
+- `"Summarize {url} and list the key takeaways."` — Quick summary
+- `"Read {url} and explain it to a beginner."` — Simplified explanation
+- `"Read {url} and generate a code example based on it."` — Code generation

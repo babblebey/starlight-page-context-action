@@ -1,0 +1,69 @@
+---
+import Default from "@astrojs/starlight/components/PageSidebar.astro";
+import PageContextActions from "../components/PageContextActions.astro";
+import config from "virtual:starlight-page-context-action-config";
+
+const showPageContextActions =
+  Astro.locals.starlightRoute.entry.data.pageContextActions !== false;
+const entryFilePath = Astro.locals.starlightRoute.entry.filePath;
+const position = config.position ?? "above-toc";
+const sticky = config.sticky ?? false;
+const wrapperClasses = [
+  "page-context-action-wrapper",
+  "right-sidebar-panel",
+  "sl-hidden",
+  "lg:sl-block",
+  position === "above-toc" ? "above-toc" : "below-toc",
+  sticky && "sticky",
+]
+  .filter(Boolean)
+  .join(" ");
+---
+
+{
+  showPageContextActions && position === "above-toc" && (
+    <div class={wrapperClasses}>
+      <div class="sl-container">
+        <PageContextActions entryFilePath={entryFilePath} />
+      </div>
+    </div>
+  )
+}
+
+<Default><slot /></Default>
+
+{
+  showPageContextActions && position === "below-toc" && (
+    <div class={wrapperClasses}>
+      <div class="sl-container">
+        <PageContextActions entryFilePath={entryFilePath} />
+      </div>
+    </div>
+  )
+}
+
+<style>
+  .page-context-action-wrapper {
+    padding: 1rem var(--sl-sidebar-pad-x);
+  }
+
+  .page-context-action-wrapper.above-toc {
+    border-bottom: 1px solid var(--sl-color-hairline);
+  }
+
+  .page-context-action-wrapper.below-toc {
+    border-top: 1px solid var(--sl-color-hairline);
+  }
+
+  .page-context-action-wrapper.sticky {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--sl-color-bg);
+  }
+
+  .page-context-action-wrapper.below-toc.sticky {
+    top: auto;
+    bottom: -1px;
+  }
+</style>
