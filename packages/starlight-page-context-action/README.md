@@ -9,6 +9,7 @@ A [Starlight](https://starlight.astro.build/) plugin that adds page action butto
 - **Copy Page** — Copies the raw markdown content to clipboard with visual feedback
 - **Open in AI Chat** — Dropdown to open the current page in ChatGPT, Claude, or T3 Chat with a customizable prompt
 - **Scroll to Top** — Smooth scroll back to the top of the page
+- **Mobile Support** — Compact "Page Actions" dropdown in the mobile table of contents bar
 - **Zero Config** — Works out of the box with sensible defaults
 - **Per-Page Control** — Disable actions on specific pages via frontmatter
 - **Two Layouts** — Choose between a spread (vertical list) or compact (pill + kebab menu) layout
