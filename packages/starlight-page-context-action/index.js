@@ -101,6 +101,9 @@ export default function starlightPageContextAction(userConfig = {}) {
             PageSidebar:
               starlightConfig.components?.PageSidebar ??
               "starlight-page-context-action/overrides/PageSidebar.astro",
+            MobileTableOfContents:
+              starlightConfig.components?.MobileTableOfContents ??
+              "starlight-page-context-action/overrides/MobileTableOfContents.astro",
           },
         });
       },
