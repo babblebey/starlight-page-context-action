@@ -1,5 +1,7 @@
 # Product Requirements Document: starlight-page-action
 
+Implementation: [PR #1](https://github.com/babblebey/starlight-page-context-action/pull/1)
+
 ## Overview
 
 **starlight-page-action** is a Starlight plugin that adds page action buttons to the **right sidebar, above the table of contents**. It provides a "Copy page" button (copies raw markdown to clipboard) and an "Ask AI about this page" dropdown (opens the page in ChatGPT, Claude, or T3 Chat).

@@ -23,11 +23,19 @@ export default defineConfig({
         { label: "Home", link: "/" },
         {
           label: "Guides",
-          autogenerate: { directory: "guides" },
+          items: [
+            { label: "Getting Started", slug: "guides/getting-started" },
+            { label: "Configuration", slug: "guides/configuration" },
+          ],
         },
         {
           label: "Examples",
-          autogenerate: { directory: "examples" },
+          items: [
+            { label: "Default Setup", slug: "examples/default" },
+            { label: "Compact Layout", slug: "examples/compact-layout" },
+            { label: "Custom Prompt", slug: "examples/custom-prompt" },
+            { label: "Disabled Actions", slug: "examples/disabled-page" },
+          ],
         },
       ],
       customCss: ["./src/styles/global.css"],

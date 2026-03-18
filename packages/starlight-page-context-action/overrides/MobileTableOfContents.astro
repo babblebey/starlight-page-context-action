@@ -20,10 +20,10 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
       <nav aria-label="Page actions">
         <details id="mobile-page-actions">
           <summary class="sl-flex">
-            <span class="toggle sl-flex">
+            <span class="page-context-action__toggle sl-flex">
               Page Actions
               <svg
-                class="caret"
+                class="page-context-action__caret"
                 xmlns="http://www.w3.org/2000/svg"
                 width="13"
                 height="13"
@@ -38,12 +38,16 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
               </svg>
             </span>
           </summary>
-          <div class="dropdown">
+          <div class="page-context-action__dropdown">
             {actions.copy && (
-              <button class="action-item" type="button" data-mobile-copy>
-                <span class="action-item-content">
+              <button
+                class="page-context-action__action-item"
+                type="button"
+                data-mobile-copy
+              >
+                <span class="page-context-action__action-item-content">
                   <svg
-                    class="icon-copy"
+                    class="page-context-action__icon-copy"
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
                     height="16"
@@ -58,7 +62,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                   </svg>
                   <svg
-                    class="icon-check"
+                    class="page-context-action__icon-check"
                     style="display:none"
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -73,7 +77,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                   <svg
-                    class="icon-error"
+                    class="page-context-action__icon-error"
                     style="display:none"
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -95,13 +99,13 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
             )}
             {actions.chatgpt && (
               <a
-                class="action-item"
+                class="page-context-action__action-item"
                 data-mobile-ai="chatgpt"
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="action-item-content">
+                <span class="page-context-action__action-item-content">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -115,7 +119,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
                   <span>Open in ChatGPT</span>
                 </span>
                 <svg
-                  class="external-icon"
+                  class="page-context-action__external-icon"
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"
                   height="12"
@@ -134,13 +138,13 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
             )}
             {actions.claude && (
               <a
-                class="action-item"
+                class="page-context-action__action-item"
                 data-mobile-ai="claude"
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="action-item-content">
+                <span class="page-context-action__action-item-content">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -157,7 +161,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
                   <span>Open in Claude</span>
                 </span>
                 <svg
-                  class="external-icon"
+                  class="page-context-action__external-icon"
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"
                   height="12"
@@ -176,13 +180,13 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
             )}
             {actions.t3chat && (
               <a
-                class="action-item"
+                class="page-context-action__action-item"
                 data-mobile-ai="t3chat"
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span class="action-item-content">
+                <span class="page-context-action__action-item-content">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -199,7 +203,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
                   <span>Open in T3 Chat</span>
                 </span>
                 <svg
-                  class="external-icon"
+                  class="page-context-action__external-icon"
                   xmlns="http://www.w3.org/2000/svg"
                   width="12"
                   height="12"
@@ -217,8 +221,12 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
               </a>
             )}
             {actions.scrollTop && (
-              <button class="action-item" type="button" data-mobile-scroll-top>
-                <span class="action-item-content">
+              <button
+                class="page-context-action__action-item"
+                type="button"
+                data-mobile-scroll-top
+              >
+                <span class="page-context-action__action-item-content">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="16"
@@ -269,7 +277,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
     display: none;
   }
 
-  .toggle {
+  .page-context-action__toggle {
     flex-shrink: 0;
     gap: 1rem;
     align-items: center;
@@ -285,21 +293,21 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
     cursor: pointer;
   }
 
-  details[open] .toggle {
+  details[open] .page-context-action__toggle {
     color: var(--sl-color-white);
     border-color: var(--sl-color-accent);
   }
 
-  details .toggle:hover {
+  details .page-context-action__toggle:hover {
     color: var(--sl-color-white);
     border-color: var(--sl-color-gray-2);
   }
 
-  :global([dir="rtl"]) .caret {
+  :global([dir="rtl"]) .page-context-action__caret {
     transform: rotateZ(180deg);
   }
 
-  details[open] .caret {
+  details[open] .page-context-action__caret {
     transform: rotateZ(90deg);
   }
 
@@ -307,7 +315,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
     position: relative;
   }
 
-  .dropdown {
+  .page-context-action__dropdown {
     position: absolute;
     top: 100%;
     inset-inline-end: 0;
@@ -322,7 +330,7 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
     overscroll-behavior: contain;
   }
 
-  .action-item {
+  .page-context-action__action-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -343,31 +351,31 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
     /* font: inherit; */
   }
 
-  .action-item:hover {
+  .page-context-action__action-item:hover {
     background: var(--sl-color-hairline-light);
     color: var(--sl-color-white);
   }
 
-  .action-item-content {
+  .page-context-action__action-item-content {
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  .icon-check {
+  .page-context-action__icon-check {
     color: var(--sl-color-green);
   }
 
-  .icon-error {
+  .page-context-action__icon-error {
     color: var(--sl-color-red);
   }
 
-  .external-icon {
+  .page-context-action__external-icon {
     flex-shrink: 0;
     opacity: 0.5;
   }
 
-  .action-item:hover .external-icon {
+  .page-context-action__action-item:hover .page-context-action__external-icon {
     opacity: 0.8;
   }
 </style>
@@ -379,6 +387,12 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
   @media (max-width: 50rem) {
     .display-current {
       width: 35%;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .display-current {
+      width: 25%;
     }
   }
 </style>
@@ -426,9 +440,15 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
         const copyBtn = this.querySelector("[data-mobile-copy]");
         if (copyBtn) {
           copyBtn.addEventListener("click", async () => {
-            const iconCopy = copyBtn.querySelector(".icon-copy");
-            const iconCheck = copyBtn.querySelector(".icon-check");
-            const iconError = copyBtn.querySelector(".icon-error");
+            const iconCopy = copyBtn.querySelector(
+              ".page-context-action__icon-copy",
+            );
+            const iconCheck = copyBtn.querySelector(
+              ".page-context-action__icon-check",
+            );
+            const iconError = copyBtn.querySelector(
+              ".page-context-action__icon-error",
+            );
 
             try {
               const normalizedBase = base.replace(/\/$/, "");

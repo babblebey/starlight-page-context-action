@@ -9,12 +9,14 @@ const entryFilePath = Astro.locals.starlightRoute.entry.filePath;
 const position = config.position ?? "above-toc";
 const sticky = config.sticky ?? false;
 const wrapperClasses = [
-  "page-context-action-wrapper",
+  "page-context-action__wrapper",
   "right-sidebar-panel",
   "sl-hidden",
   "lg:sl-block",
-  position === "above-toc" ? "above-toc" : "below-toc",
-  sticky && "sticky",
+  position === "above-toc"
+    ? "page-context-action__above-toc"
+    : "page-context-action__below-toc",
+  sticky && "page-context-action__sticky",
 ]
   .filter(Boolean)
   .join(" ");
@@ -43,26 +45,26 @@ const wrapperClasses = [
 }
 
 <style>
-  .page-context-action-wrapper {
+  .page-context-action__wrapper {
     padding: 1rem var(--sl-sidebar-pad-x);
   }
 
-  .page-context-action-wrapper.above-toc {
+  .page-context-action__wrapper.page-context-action__above-toc {
     border-bottom: 1px solid var(--sl-color-hairline);
   }
 
-  .page-context-action-wrapper.below-toc {
+  .page-context-action__wrapper.page-context-action__below-toc {
     border-top: 1px solid var(--sl-color-hairline);
   }
 
-  .page-context-action-wrapper.sticky {
+  .page-context-action__wrapper.page-context-action__sticky {
     position: sticky;
     top: 0;
     z-index: 1;
     background-color: var(--sl-color-bg);
   }
 
-  .page-context-action-wrapper.below-toc.sticky {
+  .page-context-action__wrapper.page-context-action__below-toc.page-context-action__sticky {
     top: auto;
     bottom: -1px;
   }
