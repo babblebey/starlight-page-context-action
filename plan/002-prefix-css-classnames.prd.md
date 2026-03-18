@@ -1,5 +1,7 @@
 # PRD: Prefix All Custom CSS Class Names
 
+Implementation: [PR #3](https://github.com/babblebey/starlight-page-context-action/pull/3)
+
 ## Summary
 
 Namespace every custom (non-Starlight) CSS class name in the plugin with the `page-context-action__` prefix (double-underscore BEM modifier style). This prevents style collisions when consumers add their own CSS and makes the plugin's DOM footprint instantly recognisable.
