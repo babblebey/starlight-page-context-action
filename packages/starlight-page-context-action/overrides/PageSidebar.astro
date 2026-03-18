@@ -13,7 +13,9 @@ const wrapperClasses = [
   "right-sidebar-panel",
   "sl-hidden",
   "lg:sl-block",
-  position === "above-toc" ? "page-context-action__above-toc" : "page-context-action__below-toc",
+  position === "above-toc"
+    ? "page-context-action__above-toc"
+    : "page-context-action__below-toc",
   sticky && "page-context-action__sticky",
 ]
   .filter(Boolean)

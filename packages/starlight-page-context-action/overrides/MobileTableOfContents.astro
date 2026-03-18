@@ -40,7 +40,11 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
           </summary>
           <div class="page-context-action__dropdown">
             {actions.copy && (
-              <button class="page-context-action__action-item" type="button" data-mobile-copy>
+              <button
+                class="page-context-action__action-item"
+                type="button"
+                data-mobile-copy
+              >
                 <span class="page-context-action__action-item-content">
                   <svg
                     class="page-context-action__icon-copy"
@@ -217,7 +221,11 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
               </a>
             )}
             {actions.scrollTop && (
-              <button class="page-context-action__action-item" type="button" data-mobile-scroll-top>
+              <button
+                class="page-context-action__action-item"
+                type="button"
+                data-mobile-scroll-top
+              >
                 <span class="page-context-action__action-item-content">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -432,9 +440,15 @@ const rawSourcePath = `_page-context-action-raw/${entryFilePath}`;
         const copyBtn = this.querySelector("[data-mobile-copy]");
         if (copyBtn) {
           copyBtn.addEventListener("click", async () => {
-            const iconCopy = copyBtn.querySelector(".page-context-action__icon-copy");
-            const iconCheck = copyBtn.querySelector(".page-context-action__icon-check");
-            const iconError = copyBtn.querySelector(".page-context-action__icon-error");
+            const iconCopy = copyBtn.querySelector(
+              ".page-context-action__icon-copy",
+            );
+            const iconCheck = copyBtn.querySelector(
+              ".page-context-action__icon-check",
+            );
+            const iconError = copyBtn.querySelector(
+              ".page-context-action__icon-error",
+            );
 
             try {
               const normalizedBase = base.replace(/\/$/, "");
