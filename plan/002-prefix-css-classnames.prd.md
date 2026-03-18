@@ -93,8 +93,8 @@ The root element class `page-context-action` remains unchanged — it is the nam
 
 ### Phase 3 — `PageSidebar.astro`
 
-- [ ] Update the `wrapperClasses` array: `page-context-action-wrapper` → `page-context-action__wrapper`, `above-toc` / `below-toc` → `page-context-action__above-toc` / `page-context-action__below-toc`, `sticky` → `page-context-action__sticky`
-- [ ] Update all CSS selectors in the `<style>` block
+- [x] Update the `wrapperClasses` array: `page-context-action-wrapper` → `page-context-action__wrapper`, `above-toc` / `below-toc` → `page-context-action__above-toc` / `page-context-action__below-toc`, `sticky` → `page-context-action__sticky`
+- [x] Update all CSS selectors in the `<style>` block
 
 ---
 
