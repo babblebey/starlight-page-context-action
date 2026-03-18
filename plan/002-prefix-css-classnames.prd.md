@@ -87,9 +87,9 @@ The root element class `page-context-action` remains unchanged — it is the nam
 
 ### Phase 2 — `MobileTableOfContents.astro`
 
-- [ ] Rename all `class` attributes in the HTML template
-- [ ] Update all CSS selectors in the `<style>` block
-- [ ] Update JS `querySelector` strings: `.icon-copy` → `.page-context-action__icon-copy`, `.icon-check` → `.page-context-action__icon-check`, `.icon-error` → `.page-context-action__icon-error`
+- [x] Rename all `class` attributes in the HTML template
+- [x] Update all CSS selectors in the `<style>` block
+- [x] Update JS `querySelector` strings: `.icon-copy` → `.page-context-action__icon-copy`, `.icon-check` → `.page-context-action__icon-check`, `.icon-error` → `.page-context-action__icon-error`
 
 ### Phase 3 — `PageSidebar.astro`
 
