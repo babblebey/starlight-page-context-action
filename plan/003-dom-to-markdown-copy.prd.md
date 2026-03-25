@@ -221,8 +221,8 @@ actions: {
 
 ### Phase 2: Add `viewMarkdown` Config Option
 
-- [ ] Add `viewMarkdown: false` to `defaultConfig.actions` in `index.js`
-- [ ] Add `viewMarkdown?: boolean` with JSDoc to `StarlightPageContextActionActions` in `index.d.ts`
+- [x] Add `viewMarkdown: false` to `defaultConfig.actions` in `index.js`
+- [x] Add `viewMarkdown?: boolean` with JSDoc to `StarlightPageContextActionActions` in `index.d.ts`
 
 ### Phase 3: "View as Markdown" UI in Desktop Component
 

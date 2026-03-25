@@ -9,6 +9,7 @@ const defaultConfig = {
   sticky: false,
   actions: {
     copy: true,
+    viewMarkdown: false,
     chatgpt: true,
     claude: true,
     t3chat: true,
