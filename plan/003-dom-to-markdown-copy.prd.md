@@ -232,8 +232,8 @@ actions: {
 
 ### Phase 4: "View as Markdown" UI in Mobile Component
 
-- [ ] Add "View as Markdown" item in mobile page actions dropdown in `MobileTableOfContents.astro`
-- [ ] Conditionally render based on `actions.viewMarkdown`
+- [x] Add "View as Markdown" item in mobile page actions dropdown in `MobileTableOfContents.astro`
+- [x] Conditionally render based on `actions.viewMarkdown`
 
 ### Phase 5: Verification
 
