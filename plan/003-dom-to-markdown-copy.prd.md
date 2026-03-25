@@ -226,9 +226,9 @@ actions: {
 
 ### Phase 3: "View as Markdown" UI in Desktop Component
 
-- [ ] Add "View as Markdown" button in spread layout (link opening `{base}/_page-context-action-raw/{entryFilePath}` in new tab)
-- [ ] Add "View as Markdown" item in compact layout kebab dropdown
-- [ ] Conditionally render based on `actions.viewMarkdown`
+- [x] Add "View as Markdown" button in spread layout (link opening `{base}/_page-context-action-raw/{entryFilePath}` in new tab)
+- [x] Add "View as Markdown" item in compact layout kebab dropdown
+- [x] Conditionally render based on `actions.viewMarkdown`
 
 ### Phase 4: "View as Markdown" UI in Mobile Component
 
