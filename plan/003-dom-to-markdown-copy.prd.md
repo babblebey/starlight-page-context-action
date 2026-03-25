@@ -205,19 +205,19 @@ actions: {
 
 ### Phase 1: Enhance `cleanMarkdown()` in `index.js`
 
-- [ ] Extract page title from frontmatter and prepend as `# Title\n\n`
-- [ ] Add regexes to strip wrapper-only components: `Steps`, `CardGrid`, `FileTree`, `Tabs`, `TabItem`, `Icon`
-- [ ] Add regexes to convert semantic components:
+- [x] Extract page title from frontmatter and prepend as `# Title\n\n`
+- [x] Add regexes to strip wrapper-only components: `Steps`, `CardGrid`, `FileTree`, `Tabs`, `TabItem`, `Icon`
+- [x] Add regexes to convert semantic components:
   - `LinkCard` → `[title](href)`
   - `Card` → `**title**\ncontent`
   - `Aside` → `**Title:** content` (with default titles per type)
   - `Badge` → text
   - `Code` → fenced code block
   - `LinkButton` → `[text](href)`
-- [ ] Strip remaining HTML tags (preserving content inside fenced code blocks)
-- [ ] Strip import statements (preserving content inside fenced code blocks)
-- [ ] Normalize whitespace (collapse 3+ newlines, fix indentation)
-- [ ] Ensure all regex operations are safe against ReDoS (no nested quantifiers on overlapping patterns)
+- [x] Strip remaining HTML tags (preserving content inside fenced code blocks)
+- [x] Strip import statements (preserving content inside fenced code blocks)
+- [x] Normalize whitespace (collapse 3+ newlines, fix indentation)
+- [x] Ensure all regex operations are safe against ReDoS (no nested quantifiers on overlapping patterns)
 
 ### Phase 2: Add `viewMarkdown` Config Option
 
