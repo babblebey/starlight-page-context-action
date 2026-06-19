@@ -161,6 +161,33 @@ function cleanMarkdown(content) {
 }
 
 /**
+ * Rename a markdown file based on its path and name, following the rules:
+ * - If the file is named "index", rename it to the name of its parent folder.
+ * - If the file is in a subfolder, include the subfolder in the new name.
+ * - Otherwise, keep the original name.
+ * @param {string} fileName 
+ * @param {string} fileExtension 
+ * @param {string} fullPath 
+ * @returns {string}
+ */
+function renameHandler(fileName, fileExtension, fullPath) {
+  const normalized = fullPath.replace(/\\/g, "/");
+  const relative = normalized
+    .split("src/content/docs/")[1]
+    .replace(new RegExp(`\\.${fileExtension}$`), "");
+  const segments = relative.split("/");
+  if (fileName === "index") {
+    if (segments.length === 1) return "index.md";
+    const dirs = segments.slice(0, -2).join("/");
+    const folder = segments[segments.length - 2];
+    return dirs ? `${dirs}/${folder}.md` : `${folder}.md`;
+  }
+  const dirs = segments.slice(0, -1).join("/");
+
+  return dirs ? `${dirs}/${fileName}.md` : `${fileName}.md`;
+}
+
+/**
  * @param {Partial<import('./index.js').StarlightPageContextActionConfig>} [userConfig]
  * @returns {import('@astrojs/starlight/types').StarlightPlugin}
  */
@@ -202,20 +229,20 @@ export default function starlightPageContextAction(userConfig = {}) {
                     virtual({
                       "virtual:starlight-page-context-action-config": `export default ${JSON.stringify(config)}`,
                     }),
-                    ...(config.actions.copy
+                    ...(config.actions.copy || config.actions.viewMarkdown
                       ? [
                           viteStaticCopy({
                             targets: [
                               {
                                 src: "src/content/docs/**/*.{md,mdx}",
-                                dest: "_page-context-action-raw",
+                                dest: "",
                                 transform: {
                                   encoding: "utf-8",
                                   handler: (content) => cleanMarkdown(content),
                                 },
+                                rename: renameHandler,
                               },
                             ],
-                            structured: true,
                           }),
                         ]
                       : []),
