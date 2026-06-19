@@ -139,10 +139,18 @@ function cleanMarkdown(content) {
     ),
   );
 
-  // --- Strip remaining HTML tags (outside code blocks) ---
+  // --- Strip comments outside code blocks ---
   cleaned = transformOutsideCodeBlocks(cleaned, (text) =>
-    text.replace(/<[^>]+>/g, ""),
+    text
+      .replace(/<!--([\s\S]*?)-->/g, "")
+      .replace(/\{\/\*[\s\S]*?\*\/\}/g, ""),
   );
+
+  // TODO: Consider stripping HTML tags outside code blocks, but this may remove useful formatting like bold/italic. For now, we leave them in.
+  // --- Strip remaining HTML tags (outside code blocks) ---
+  // cleaned = transformOutsideCodeBlocks(cleaned, (text) =>
+  //   text.replace(/<[^>]+>/g, ""),
+  // );
 
   // --- Normalize whitespace ---
   // Collapse 3+ newlines to 2 (single blank line)
