@@ -237,15 +237,15 @@ actions: {
 
 ### Phase 5: Verification
 
-- [ ] `pnpm build` in `docs/` completes without errors
-- [ ] Copy from plugins-list page → clean Markdown, no `<PluginCard>`, `<PluginStep>`, `<div>` tags
-- [ ] Copy from default example page → clean Markdown with `# Title` heading
-- [ ] Copy from a page with fenced code blocks → code blocks preserved (not mangled by HTML stripping)
-- [ ] Copy from a page with `<Aside>`, `<Card>`, `<LinkCard>` → proper Markdown equivalents
-- [ ] "View as Markdown" button opens the raw file in the browser (when enabled)
-- [ ] `viewMarkdown: false` (default) → button not rendered
-- [ ] Mobile layout: both copy and view-as-markdown actions work
-- [ ] Icon feedback (success checkmark / error X) still works in both layouts
+- [x] `pnpm build` in `docs/` completes without errors
+- [x] Copy from plugins-list page → clean Markdown, no `<PluginCard>`, `<PluginStep>`, `<div>` tags
+- [x] Copy from default example page → clean Markdown with `# Title` heading
+- [x] Copy from a page with fenced code blocks → code blocks preserved (not mangled by HTML stripping)
+- [x] Copy from a page with `<Aside>`, `<Card>`, `<LinkCard>` → proper Markdown equivalents
+- [x] "View as Markdown" button opens the raw file in the browser (when enabled)
+- [x] `viewMarkdown: false` (default) → button not rendered
+- [x] Mobile layout: both copy and view-as-markdown actions work
+- [x] Icon feedback (success checkmark / error X) still works in both layouts
 
 ---
 
