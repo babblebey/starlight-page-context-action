@@ -1,12 +1,13 @@
 # starlight-page-context-action
 
-A [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the right sidebar — making utility actions like **copy page**, **open in AI chat**, and **scroll to top** always accessible alongside the table of contents.
+A [Starlight](https://starlight.astro.build/) plugin that adds page action buttons to the right sidebar — making utility actions like **copy page**, **view as markdown**, **open in AI chat**, and **scroll to top** always accessible alongside the table of contents.
 
 **[Demo & Docs](https://starlight-page-context-action.vercel.app)**
 
 ## Features
 
-- **Copy Page** — Copies the raw markdown content to clipboard with visual feedback
+- **Copy Page** — Copies the cleaned markdown content to clipboard with visual feedback
+- **View as Markdown** — Opens the cleaned markdown file in the browser
 - **Open in AI Chat** — Dropdown to open the current page in ChatGPT, Claude, or T3 Chat with a customizable prompt
 - **Scroll to Top** — Smooth scroll back to the top of the page
 - **Mobile Support** — Compact "Page Actions" dropdown in the mobile table of contents bar
@@ -54,6 +55,7 @@ starlightPageContextAction({
   sticky: false,
   actions: {
     copy: true,
+    viewMarkdown: false,
     chatgpt: true,
     claude: true,
     t3chat: true,
@@ -70,7 +72,7 @@ starlightPageContextAction({
 | `position` | `"above-toc"` \| `"below-toc"` | `"above-toc"`                                     | Position of the actions relative to the table of contents.                                                                              |
 | `layout`   | `"spread"` \| `"compact"`      | `"spread"`                                        | Layout style. `"spread"` shows all buttons vertically. `"compact"` shows a primary copy button inline with a kebab menu for AI actions. |
 | `sticky`   | `boolean`                      | `false`                                           | Whether the actions stick to the top/bottom of the sidebar on scroll.                                                                   |
-| `actions`  | `object`                       | All `true`                                        | Toggle individual action buttons on or off.                                                                                             |
+| `actions`  | `object`                       | `copy`, `chatgpt`, `claude`, `t3chat`, `scrollTop` `true`; `viewMarkdown` `false` | Toggle individual action buttons on or off.                                                                                             |
 
 ### Disabling on a Specific Page
 
