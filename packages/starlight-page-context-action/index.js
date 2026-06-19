@@ -101,9 +101,7 @@ function cleanMarkdown(content) {
         const titleAttr = attrs.match(/title=["']([^"']+)["']/);
         const typeAttr = attrs.match(/type=["']([^"']+)["']/);
         const heading =
-          titleAttr?.[1] ||
-          asideDefaults[typeAttr?.[1]] ||
-          asideDefaults.note;
+          titleAttr?.[1] || asideDefaults[typeAttr?.[1]] || asideDefaults.note;
         return `**${heading}:** ${c.trim()}`;
       },
     ),
@@ -141,9 +139,7 @@ function cleanMarkdown(content) {
 
   // --- Strip comments outside code blocks ---
   cleaned = transformOutsideCodeBlocks(cleaned, (text) =>
-    text
-      .replace(/<!--([\s\S]*?)-->/g, "")
-      .replace(/\{\/\*[\s\S]*?\*\/\}/g, ""),
+    text.replace(/<!--([\s\S]*?)-->/g, "").replace(/\{\/\*[\s\S]*?\*\/\}/g, ""),
   );
 
   // TODO: Consider stripping HTML tags outside code blocks, but this may remove useful formatting like bold/italic. For now, we leave them in.
@@ -173,9 +169,9 @@ function cleanMarkdown(content) {
  * - If the file is named "index", rename it to the name of its parent folder.
  * - If the file is in a subfolder, include the subfolder in the new name.
  * - Otherwise, keep the original name.
- * @param {string} fileName 
- * @param {string} fileExtension 
- * @param {string} fullPath 
+ * @param {string} fileName
+ * @param {string} fileExtension
+ * @param {string} fullPath
  * @returns {string}
  */
 function renameHandler(fileName, fileExtension, fullPath) {

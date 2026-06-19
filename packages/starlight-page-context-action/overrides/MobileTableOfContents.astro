@@ -7,7 +7,8 @@ const showPageContextActions =
 const entryFilePath = Astro.locals.starlightRoute.entry.filePath;
 const { actions, prompt } = config;
 const anyAiEnabled = actions.chatgpt || actions.claude || actions.t3chat;
-const anyActionEnabled = actions.copy || actions.viewMarkdown || anyAiEnabled || actions.scrollTop;
+const anyActionEnabled =
+  actions.copy || actions.viewMarkdown || anyAiEnabled || actions.scrollTop;
 const base = import.meta.env.BASE_URL;
 const rawSourcePath = (() => {
   const relative = entryFilePath
@@ -114,7 +115,7 @@ const rawSourcePath = (() => {
             {actions.viewMarkdown && (
               <a
                 class="page-context-action__action-item"
-                href={`${base.replace(/\/$/, '')}/${rawSourcePath}`}
+                href={`${base.replace(/\/$/, "")}/${rawSourcePath}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
