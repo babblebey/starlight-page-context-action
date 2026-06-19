@@ -9,6 +9,8 @@ export interface StarlightPageContextActionActions {
   claude?: boolean;
   /** Show "Open in T3 Chat" in the AI dropdown. @default true */
   t3chat?: boolean;
+  /** Show "View as Markdown" button that opens the cleaned raw Markdown file in a new tab. @default false */
+  viewMarkdown?: boolean;
   /** Show "Scroll to top" button. @default true */
   scrollTop?: boolean;
 }
