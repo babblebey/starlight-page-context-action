@@ -8,6 +8,10 @@
     "type": "git",
     "url": "https://github.com/babblebey/starlight-page-context-action"
   },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "homepage": "https://github.com/babblebey/starlight-page-context-action#readme",
   "bugs": "https://github.com/babblebey/starlight-page-context-action/issues",
   "license": "MIT",
@@ -41,5 +45,13 @@
   },
   "devDependencies": {
     "@astrojs/starlight": ">=0.36.0"
+  },
+  "release": {
+    "tagFormat": "${version}",
+    "plugins": [
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      "@semantic-release/github"
+    ]
   }
 }
