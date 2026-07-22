@@ -39,6 +39,11 @@ export interface StarlightPageContextActionConfig {
    * @default false
    */
   sticky?: boolean;
+  /**
+   * Generate an llms.txt file at build time that lists cleaned Markdown page URLs.
+   * @default false
+   */
+  llmsTxt?: boolean;
   /** Configure which action buttons to show. */
   actions?: StarlightPageContextActionActions;
 }

@@ -62,6 +62,21 @@ starlightPageContextAction({
 });
 ```
 
+### `llmsTxt`
+
+**Type:** `boolean`  
+**Default:** `false`
+
+When enabled, the plugin generates an `llms.txt` file in your build output containing links to cleaned Markdown docs pages.
+
+```js
+starlightPageContextAction({
+  llmsTxt: true,
+});
+```
+
+This is useful for making your docs easier to consume in LLM tooling that supports `llms.txt` discovery.
+
 ### `actions`
 
 An object controlling which action buttons are displayed.
@@ -141,6 +156,7 @@ export default defineConfig({
           position: "below-toc",
           layout: "spread", // default
           sticky: true,
+          llmsTxt: true,
           actions: {
             copy: true, // default
             viewMarkdown: true,

@@ -1,3 +1,6 @@
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import virtual from "vite-plugin-virtual";
 
@@ -7,6 +10,7 @@ const defaultConfig = {
   position: "above-toc",
   layout: "spread",
   sticky: false,
+  llmsTxt: false,
   actions: {
     copy: true,
     viewMarkdown: false,
@@ -192,6 +196,326 @@ function renameHandler(fileName, fileExtension, fullPath) {
 }
 
 /**
+ * @param {string} frontmatter
+ * @param {string} key
+ * @returns {string | undefined}
+ */
+function getFrontmatterValue(frontmatter, key) {
+  const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = frontmatter.match(
+    new RegExp(`^${escapedKey}:\\s*(?:["']([^"']+)["']|([^\\n#]+))`, "m"),
+  );
+  const value = match?.[1] ?? match?.[2];
+  return value ? value.trim() : undefined;
+}
+
+/**
+ * @param {string} content
+ * @returns {{ title?: string; description?: string; draft: boolean }}
+ */
+function getDocFrontmatter(content) {
+  const match = content.match(/^---\s*\r?\n([\s\S]*?)\r?\n---\s*(?:\r?\n|$)/);
+  if (!match) {
+    return { draft: false };
+  }
+
+  const frontmatter = match[1];
+  return {
+    title: getFrontmatterValue(frontmatter, "title"),
+    description: getFrontmatterValue(frontmatter, "description"),
+    draft: /^draft:\s*true(?:\s+#.*)?$/m.test(frontmatter),
+  };
+}
+
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+function toTitleCase(value) {
+  return value
+    .replace(/[-_]+/g, " ")
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
+/**
+ * @param {string} fullPath
+ * @returns {string}
+ */
+function toMarkdownAssetPath(fullPath) {
+  const ext = path.extname(fullPath).replace(/^\./, "");
+  const fileName = path.basename(fullPath, path.extname(fullPath));
+  return renameHandler(fileName, ext, fullPath);
+}
+
+/**
+ * @param {string} pathname
+ * @param {string | undefined} site
+ * @param {string | undefined} base
+ * @returns {string}
+ */
+function toPublicUrl(pathname, site, base) {
+  const normalizedPath = pathname.replace(/^\/+/, "");
+  if (site) {
+    const baseUrl = new URL(base ?? "/", site);
+    return new URL(normalizedPath, baseUrl).toString();
+  }
+
+  const normalizedBase = (base ?? "/").replace(/\/+$/, "");
+  const prefix = normalizedBase ? `${normalizedBase}/` : "/";
+  return `${prefix}${normalizedPath}`.replace(/^([^/])/, "/$1");
+}
+
+/**
+ * @param {string} value
+ * @returns {boolean}
+ */
+function isExternalUrl(value) {
+  return /^[a-z][a-z0-9+.-]*:\/\//i.test(value);
+}
+
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+function toMarkdownPathFromSidebarValue(value) {
+  const withoutHashOrQuery = value.split("#")[0].split("?")[0].trim();
+  if (!withoutHashOrQuery || isExternalUrl(withoutHashOrQuery)) return "";
+
+  const normalized = withoutHashOrQuery.replace(/^\/+|\/+$/g, "");
+  if (!normalized) return "index.md";
+
+  if (/\.mdx?$/i.test(normalized)) {
+    return normalized.replace(/\.mdx?$/i, ".md");
+  }
+
+  if (normalized.endsWith("/index")) {
+    return `${normalized.slice(0, -"/index".length)}.md`;
+  }
+
+  if (normalized === "index") return "index.md";
+  return `${normalized}.md`;
+}
+
+/**
+ * @param {any} sidebarItem
+ * @returns {string | undefined}
+ */
+function getSidebarItemLink(sidebarItem) {
+  if (!sidebarItem || typeof sidebarItem !== "object") return undefined;
+  if (typeof sidebarItem.link === "string") return sidebarItem.link;
+  if (typeof sidebarItem.slug === "string") return sidebarItem.slug;
+  return undefined;
+}
+
+/**
+ * @param {any} sidebarItem
+ * @returns {any[]}
+ */
+function getSidebarItemChildren(sidebarItem) {
+  if (!sidebarItem || typeof sidebarItem !== "object") return [];
+  return Array.isArray(sidebarItem.items) ? sidebarItem.items : [];
+}
+
+/**
+ * @param {any[]} sidebar
+ * @returns {{ heading: string; markdownPaths: string[] }[]}
+ */
+function collectSidebarSections(sidebar) {
+  /** @type {{ heading: string; markdownPaths: string[] }[]} */
+  const sections = [];
+
+  /**
+   * @param {any[]} items
+   * @param {string} currentHeading
+   */
+  function walk(items, currentHeading) {
+    for (const item of items) {
+      if (!item || typeof item !== "object") continue;
+
+      const linkOrSlug = getSidebarItemLink(item);
+      const label = typeof item.label === "string" ? item.label : "";
+      const children = getSidebarItemChildren(item);
+      const isLabelGroup = !linkOrSlug && label && children.length > 0;
+
+      if (isLabelGroup) {
+        sections.push({ heading: label, markdownPaths: [] });
+        walk(children, label);
+        continue;
+      }
+
+      const activeHeading = currentHeading || "Pages";
+      let section = sections.find((entry) => entry.heading === activeHeading);
+      if (!section) {
+        section = { heading: activeHeading, markdownPaths: [] };
+        sections.push(section);
+      }
+
+      if (typeof linkOrSlug === "string") {
+        const markdownPath = toMarkdownPathFromSidebarValue(linkOrSlug);
+        if (markdownPath) {
+          section.markdownPaths.push(markdownPath);
+        }
+      }
+
+      if (children.length > 0) {
+        walk(children, activeHeading);
+      }
+    }
+  }
+
+  walk(sidebar, "");
+
+  return sections.filter((section) => section.markdownPaths.length > 0);
+}
+
+/**
+ * @param {string} docsDir
+ * @returns {Promise<string[]>}
+ */
+async function collectDocsFiles(docsDir) {
+  /** @type {string[]} */
+  const files = [];
+  const entries = await readdir(docsDir, { withFileTypes: true });
+
+  for (const entry of entries) {
+    const fullPath = path.join(docsDir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await collectDocsFiles(fullPath)));
+      continue;
+    }
+
+    if (/\.mdx?$/i.test(entry.name)) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+/**
+ * @param {{
+ *   root: URL;
+ *   site?: URL;
+ *   base?: string;
+ *   title?: string;
+ *   sidebar?: any[];
+ *   logger: { warn: (message: string) => void; info: (message: string) => void };
+ * }} options
+ */
+function llmsTxtPlugin(options) {
+  const docsDir = path.join(
+    fileURLToPath(options.root),
+    "src",
+    "content",
+    "docs",
+  );
+  let hasGenerated = false;
+
+  return {
+    name: "starlight-page-context-action-llms-txt",
+    apply: (_, env) => env.command === "build" && env.ssrBuild !== true,
+    async generateBundle() {
+      if (hasGenerated) return;
+
+      /** @type {string[]} */
+      let docFiles;
+      try {
+        docFiles = await collectDocsFiles(docsDir);
+      } catch {
+        options.logger.warn(
+          "Could not find docs content at src/content/docs; skipping llms.txt generation.",
+        );
+        return;
+      }
+
+      /** @type {{ title: string; markdownPath: string; url: string; description?: string }[]} */
+      const pages = [];
+
+      for (const docFile of docFiles) {
+        const content = await readFile(docFile, "utf-8");
+        const frontmatter = getDocFrontmatter(content);
+        if (frontmatter.draft) continue;
+
+        const markdownPath = toMarkdownAssetPath(docFile);
+        const url = toPublicUrl(
+          markdownPath,
+          options.site?.toString(),
+          options.base,
+        );
+        const inferredTitle = toTitleCase(
+          path.basename(markdownPath, ".md") || "Index",
+        );
+
+        pages.push({
+          title: frontmatter.title ?? inferredTitle,
+          markdownPath,
+          url,
+          description: frontmatter.description,
+        });
+      }
+
+      pages.sort((a, b) => a.url.localeCompare(b.url));
+
+      const pageByMarkdownPath = new Map(
+        pages.map((page) => [page.markdownPath, page]),
+      );
+      const usedMarkdownPaths = new Set();
+      const sidebarSections = collectSidebarSections(
+        Array.isArray(options.sidebar) ? options.sidebar : [],
+      );
+
+      const lines = [
+        `# ${options.title ?? "Documentation"}`,
+        "",
+        "This file lists machine-readable Markdown pages for this docs site.",
+        "",
+      ];
+
+      for (const section of sidebarSections) {
+        lines.push(`## ${section.heading}`);
+        lines.push("");
+
+        for (const markdownPath of section.markdownPaths) {
+          const page = pageByMarkdownPath.get(markdownPath);
+          if (!page || usedMarkdownPaths.has(markdownPath)) continue;
+          usedMarkdownPaths.add(markdownPath);
+          const description = page.description ? ` - ${page.description}` : "";
+          lines.push(`- [${page.title}](${page.url})${description}`);
+        }
+
+        lines.push("");
+      }
+
+      const remainingPages = pages.filter(
+        (page) => !usedMarkdownPaths.has(page.markdownPath),
+      );
+
+      if (remainingPages.length > 0) {
+        lines.push("## Other Pages");
+        lines.push("");
+        for (const page of remainingPages) {
+          const description = page.description ? ` - ${page.description}` : "";
+          lines.push(`- [${page.title}](${page.url})${description}`);
+        }
+        lines.push("");
+      }
+
+      this.emitFile({
+        type: "asset",
+        fileName: "llms.txt",
+        source: lines.join("\n"),
+      });
+
+      hasGenerated = true;
+      options.logger.info(`Generated llms.txt with ${pages.length} entries.`);
+    },
+  };
+}
+
+/**
  * @param {Partial<import('./index.js').StarlightPageContextActionConfig>} [userConfig]
  * @returns {import('@astrojs/starlight/types').StarlightPlugin}
  */
@@ -201,6 +525,7 @@ export default function starlightPageContextAction(userConfig = {}) {
     position: userConfig.position ?? defaultConfig.position,
     layout: userConfig.layout ?? defaultConfig.layout,
     sticky: userConfig.sticky ?? defaultConfig.sticky,
+    llmsTxt: userConfig.llmsTxt ?? defaultConfig.llmsTxt,
     actions: {
       ...defaultConfig.actions,
       ...userConfig.actions,
@@ -226,14 +551,20 @@ export default function starlightPageContextAction(userConfig = {}) {
         addIntegration({
           name: "starlight-page-context-action-integration",
           hooks: {
-            "astro:config:setup"({ updateConfig: updateAstroConfig }) {
+            "astro:config:setup"({
+              updateConfig: updateAstroConfig,
+              config: astroConfig,
+            }) {
+              const shouldGenerateMarkdown =
+                config.actions.copy || config.actions.viewMarkdown || config.llmsTxt;
+
               updateAstroConfig({
                 vite: {
                   plugins: [
                     virtual({
                       "virtual:starlight-page-context-action-config": `export default ${JSON.stringify(config)}`,
                     }),
-                    ...(config.actions.copy || config.actions.viewMarkdown
+                    ...(shouldGenerateMarkdown
                       ? [
                           viteStaticCopy({
                             targets: [
@@ -247,6 +578,18 @@ export default function starlightPageContextAction(userConfig = {}) {
                                 rename: renameHandler,
                               },
                             ],
+                          }),
+                        ]
+                      : []),
+                    ...(config.llmsTxt
+                      ? [
+                          llmsTxtPlugin({
+                            root: astroConfig.root,
+                            site: astroConfig.site,
+                            base: astroConfig.base,
+                            title: starlightConfig.title,
+                            sidebar: starlightConfig.sidebar,
+                            logger,
                           }),
                         ]
                       : []),

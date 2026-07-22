@@ -53,6 +53,7 @@ starlightPageContextAction({
   position: "above-toc",
   layout: "spread",
   sticky: false,
+  llmsTxt: false,
   actions: {
     copy: true,
     viewMarkdown: false,
@@ -72,7 +73,20 @@ starlightPageContextAction({
 | `position` | `"above-toc"` \| `"below-toc"` | `"above-toc"`                                                                     | Position of the actions relative to the table of contents.                                                                              |
 | `layout`   | `"spread"` \| `"compact"`      | `"spread"`                                                                        | Layout style. `"spread"` shows all buttons vertically. `"compact"` shows a primary copy button inline with a kebab menu for AI actions. |
 | `sticky`   | `boolean`                      | `false`                                                                           | Whether the actions stick to the top/bottom of the sidebar on scroll.                                                                   |
+| `llmsTxt`  | `boolean`                      | `false`                                                                           | Generate an `llms.txt` file at build time containing links to cleaned Markdown docs pages.                                              |
 | `actions`  | `object`                       | `copy`, `chatgpt`, `claude`, `t3chat`, `scrollTop` `true`; `viewMarkdown` `false` | Toggle individual action buttons on or off.                                                                                             |
+
+### Generating llms.txt
+
+Enable `llmsTxt` to emit an `llms.txt` file in your built site output.
+
+```js
+starlightPageContextAction({
+  llmsTxt: true,
+});
+```
+
+When enabled, the plugin also ensures cleaned Markdown files are generated so `llms.txt` links point to machine-readable `.md` pages.
 
 ### Disabling on a Specific Page
 
