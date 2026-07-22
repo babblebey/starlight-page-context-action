@@ -55,6 +55,7 @@ starlightPageContextAction({
   position: "above-toc",
   layout: "spread",
   sticky: false,
+  llmsTxt: false,
   actions: {
     copy: true,
     viewMarkdown: false,
@@ -74,7 +75,24 @@ starlightPageContextAction({
 | `position` | `"above-toc"` \| `"below-toc"` | `"above-toc"`                                                                     | Position of the actions relative to the table of contents.                                                                              |
 | `layout`   | `"spread"` \| `"compact"`      | `"spread"`                                                                        | Layout style. `"spread"` shows all buttons vertically. `"compact"` shows a primary copy button inline with a kebab menu for AI actions. |
 | `sticky`   | `boolean`                      | `false`                                                                           | Whether the actions stick to the top/bottom of the sidebar on scroll.                                                                   |
+| `llmsTxt`  | `boolean`                      | `false`                                                                           | Generate an `llms.txt` file at build time containing links to cleaned Markdown docs pages.                                              |
 | `actions`  | `object`                       | `copy`, `chatgpt`, `claude`, `t3chat`, `scrollTop` `true`; `viewMarkdown` `false` | Toggle individual action buttons on or off.                                                                                             |
+
+### Generating llms.txt
+
+Enable `llmsTxt` to emit `llms.txt` and `llms-full.txt` files in your built site output.
+
+```js
+starlightPageContextAction({
+  llmsTxt: true,
+});
+```
+
+When enabled, the plugin also ensures cleaned Markdown files are generated so `llms.txt` links point to machine-readable `.md` pages.
+
+`llms-full.txt` contains concatenated cleaned Markdown content for all indexed pages, in the same order as `llms.txt`, separated by `---`.
+
+In development, the same content is previewable at `/llms.txt` and `/llms-full.txt` from the Astro dev server.
 
 ### Disabling on a Specific Page
 
