@@ -372,6 +372,16 @@ function collectSidebarSections(sidebar) {
 }
 
 /**
+ * @param {string | undefined} base
+ * @returns {string}
+ */
+function getLlmsTxtRoute(base) {
+  const normalizedBase = (base ?? "/").replace(/\/+$/, "");
+  if (!normalizedBase || normalizedBase === "/") return "/llms.txt";
+  return `${normalizedBase}/llms.txt`.replace(/^([^/])/, "/$1");
+}
+
+/**
  * @param {string} docsDir
  * @returns {Promise<string[]>}
  */
@@ -412,105 +422,138 @@ function llmsTxtPlugin(options) {
     "content",
     "docs",
   );
+  const llmsRoute = getLlmsTxtRoute(options.base);
   let hasGenerated = false;
+  let missingDocsWarningShown = false;
 
-  return {
-    name: "starlight-page-context-action-llms-txt",
-    apply: (_, env) => env.command === "build" && env.ssrBuild !== true,
-    async generateBundle() {
-      if (hasGenerated) return;
-
-      /** @type {string[]} */
-      let docFiles;
-      try {
-        docFiles = await collectDocsFiles(docsDir);
-      } catch {
+  /**
+   * @returns {Promise<{ source: string; pageCount: number } | null>}
+   */
+  async function buildLlmsTxtSource() {
+    /** @type {string[]} */
+    let docFiles;
+    try {
+      docFiles = await collectDocsFiles(docsDir);
+    } catch {
+      if (!missingDocsWarningShown) {
         options.logger.warn(
           "Could not find docs content at src/content/docs; skipping llms.txt generation.",
         );
-        return;
+        missingDocsWarningShown = true;
       }
+      return null;
+    }
 
-      /** @type {{ title: string; markdownPath: string; url: string; description?: string }[]} */
-      const pages = [];
+    /** @type {{ title: string; markdownPath: string; url: string; description?: string }[]} */
+    const pages = [];
 
-      for (const docFile of docFiles) {
-        const content = await readFile(docFile, "utf-8");
-        const frontmatter = getDocFrontmatter(content);
-        if (frontmatter.draft) continue;
+    for (const docFile of docFiles) {
+      const content = await readFile(docFile, "utf-8");
+      const frontmatter = getDocFrontmatter(content);
+      if (frontmatter.draft) continue;
 
-        const markdownPath = toMarkdownAssetPath(docFile);
-        const url = toPublicUrl(
-          markdownPath,
-          options.site?.toString(),
-          options.base,
-        );
-        const inferredTitle = toTitleCase(
-          path.basename(markdownPath, ".md") || "Index",
-        );
-
-        pages.push({
-          title: frontmatter.title ?? inferredTitle,
-          markdownPath,
-          url,
-          description: frontmatter.description,
-        });
-      }
-
-      pages.sort((a, b) => a.url.localeCompare(b.url));
-
-      const pageByMarkdownPath = new Map(
-        pages.map((page) => [page.markdownPath, page]),
-      );
-      const usedMarkdownPaths = new Set();
-      const sidebarSections = collectSidebarSections(
-        Array.isArray(options.sidebar) ? options.sidebar : [],
+      const markdownPath = toMarkdownAssetPath(docFile);
+      const url = toPublicUrl(markdownPath, options.site?.toString(), options.base);
+      const inferredTitle = toTitleCase(
+        path.basename(markdownPath, ".md") || "Index",
       );
 
-      const lines = [
-        `# ${options.title ?? "Documentation"}`,
-        "",
-        "This file lists machine-readable Markdown pages for this docs site.",
-        "",
-      ];
+      pages.push({
+        title: frontmatter.title ?? inferredTitle,
+        markdownPath,
+        url,
+        description: frontmatter.description,
+      });
+    }
 
-      for (const section of sidebarSections) {
-        lines.push(`## ${section.heading}`);
-        lines.push("");
+    pages.sort((a, b) => a.url.localeCompare(b.url));
 
-        for (const markdownPath of section.markdownPaths) {
-          const page = pageByMarkdownPath.get(markdownPath);
-          if (!page || usedMarkdownPaths.has(markdownPath)) continue;
-          usedMarkdownPaths.add(markdownPath);
-          const description = page.description ? ` - ${page.description}` : "";
-          lines.push(`- [${page.title}](${page.url})${description}`);
+    const pageByMarkdownPath = new Map(
+      pages.map((page) => [page.markdownPath, page]),
+    );
+    const usedMarkdownPaths = new Set();
+    const sidebarSections = collectSidebarSections(
+      Array.isArray(options.sidebar) ? options.sidebar : [],
+    );
+
+    const lines = [
+      `# ${options.title ?? "Documentation"}`,
+      "",
+      "This file lists machine-readable Markdown pages for this docs site.",
+      "",
+    ];
+
+    for (const section of sidebarSections) {
+      lines.push(`## ${section.heading}`);
+      lines.push("");
+
+      for (const markdownPath of section.markdownPaths) {
+        const page = pageByMarkdownPath.get(markdownPath);
+        if (!page || usedMarkdownPaths.has(markdownPath)) continue;
+        usedMarkdownPaths.add(markdownPath);
+        const description = page.description ? ` - ${page.description}` : "";
+        lines.push(`- [${page.title}](${page.url})${description}`);
+      }
+
+      lines.push("");
+    }
+
+    const remainingPages = pages.filter(
+      (page) => !usedMarkdownPaths.has(page.markdownPath),
+    );
+
+    if (remainingPages.length > 0) {
+      lines.push("## Other Pages");
+      lines.push("");
+      for (const page of remainingPages) {
+        const description = page.description ? ` - ${page.description}` : "";
+        lines.push(`- [${page.title}](${page.url})${description}`);
+      }
+      lines.push("");
+    }
+
+    return {
+      source: lines.join("\n"),
+      pageCount: pages.length,
+    };
+  }
+
+  return {
+    name: "starlight-page-context-action-llms-txt",
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        const url = req.url ? req.url.split("?")[0] : "";
+        if (url !== llmsRoute) {
+          next();
+          return;
         }
 
-        lines.push("");
-      }
-
-      const remainingPages = pages.filter(
-        (page) => !usedMarkdownPaths.has(page.markdownPath),
-      );
-
-      if (remainingPages.length > 0) {
-        lines.push("## Other Pages");
-        lines.push("");
-        for (const page of remainingPages) {
-          const description = page.description ? ` - ${page.description}` : "";
-          lines.push(`- [${page.title}](${page.url})${description}`);
+        const result = await buildLlmsTxtSource();
+        if (!result) {
+          res.statusCode = 404;
+          res.setHeader("Content-Type", "text/plain; charset=utf-8");
+          res.end("llms.txt could not be generated.");
+          return;
         }
-        lines.push("");
-      }
+
+        res.statusCode = 200;
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        res.end(result.source);
+      });
+    },
+    async generateBundle() {
+      if (hasGenerated) return;
+      const result = await buildLlmsTxtSource();
+      if (!result) return;
 
       this.emitFile({
         type: "asset",
         fileName: "llms.txt",
-        source: lines.join("\n"),
+        source: result.source,
       });
 
       hasGenerated = true;
-      options.logger.info(`Generated llms.txt with ${pages.length} entries.`);
+      options.logger.info(`Generated llms.txt with ${result.pageCount} entries.`);
     },
   };
 }

@@ -88,6 +88,8 @@ starlightPageContextAction({
 
 When enabled, the plugin also ensures cleaned Markdown files are generated so `llms.txt` links point to machine-readable `.md` pages.
 
+In development, the same content is previewable at `/llms.txt` from the Astro dev server.
+
 ### Disabling on a Specific Page
 
 Add `pageContextActions: false` to the page's frontmatter:
