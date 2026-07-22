@@ -10,6 +10,7 @@ export default defineConfig({
         starlightPageContextAction({
           position: "below-toc",
           sticky: true,
+          llmsTxt: true,
         }),
       ],
       social: [
