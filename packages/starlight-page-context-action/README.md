@@ -78,7 +78,7 @@ starlightPageContextAction({
 
 ### Generating llms.txt
 
-Enable `llmsTxt` to emit an `llms.txt` file in your built site output.
+Enable `llmsTxt` to emit `llms.txt` and `llms-full.txt` files in your built site output.
 
 ```js
 starlightPageContextAction({
@@ -88,7 +88,9 @@ starlightPageContextAction({
 
 When enabled, the plugin also ensures cleaned Markdown files are generated so `llms.txt` links point to machine-readable `.md` pages.
 
-In development, the same content is previewable at `/llms.txt` from the Astro dev server.
+`llms-full.txt` contains concatenated cleaned Markdown content for all indexed pages, in the same order as `llms.txt`, separated by `---`.
+
+In development, the same content is previewable at `/llms.txt` and `/llms-full.txt` from the Astro dev server.
 
 ### Disabling on a Specific Page
 

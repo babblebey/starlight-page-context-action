@@ -67,7 +67,10 @@ starlightPageContextAction({
 **Type:** `boolean`  
 **Default:** `false`
 
-When enabled, the plugin generates an `llms.txt` file in your build output containing links to cleaned Markdown docs pages.
+When enabled, the plugin generates:
+
+- `llms.txt` with links to cleaned Markdown docs pages
+- `llms-full.txt` with concatenated cleaned Markdown page content
 
 ```js
 starlightPageContextAction({
@@ -77,7 +80,9 @@ starlightPageContextAction({
 
 This is useful for making your docs easier to consume in LLM tooling that supports `llms.txt` discovery.
 
-During local development, you can preview the generated content at `/llms.txt` while running the Astro dev server.
+`llms-full.txt` follows the same page ordering as `llms.txt`, and each page body is separated by `---`.
+
+During local development, you can preview the generated content at `/llms.txt` and `/llms-full.txt` while running the Astro dev server.
 
 ### `actions`
 

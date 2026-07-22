@@ -373,12 +373,13 @@ function collectSidebarSections(sidebar) {
 
 /**
  * @param {string | undefined} base
+ * @param {string} fileName
  * @returns {string}
  */
-function getLlmsTxtRoute(base) {
+function getLlmsRoute(base, fileName) {
   const normalizedBase = (base ?? "/").replace(/\/+$/, "");
-  if (!normalizedBase || normalizedBase === "/") return "/llms.txt";
-  return `${normalizedBase}/llms.txt`.replace(/^([^/])/, "/$1");
+  if (!normalizedBase || normalizedBase === "/") return `/${fileName}`;
+  return `${normalizedBase}/${fileName}`.replace(/^([^/])/, "/$1");
 }
 
 /**
@@ -422,14 +423,15 @@ function llmsTxtPlugin(options) {
     "content",
     "docs",
   );
-  const llmsRoute = getLlmsTxtRoute(options.base);
+  const llmsRoute = getLlmsRoute(options.base, "llms.txt");
+  const llmsFullRoute = getLlmsRoute(options.base, "llms-full.txt");
   let hasGenerated = false;
   let missingDocsWarningShown = false;
 
   /**
-   * @returns {Promise<{ source: string; pageCount: number } | null>}
+   * @returns {Promise<{ llmsSource: string; llmsFullSource: string; pageCount: number } | null>}
    */
-  async function buildLlmsTxtSource() {
+  async function buildLlmsSources() {
     /** @type {string[]} */
     let docFiles;
     try {
@@ -444,7 +446,7 @@ function llmsTxtPlugin(options) {
       return null;
     }
 
-    /** @type {{ title: string; markdownPath: string; url: string; description?: string }[]} */
+    /** @type {{ title: string; markdownPath: string; url: string; description?: string; content: string }[]} */
     const pages = [];
 
     for (const docFile of docFiles) {
@@ -463,6 +465,7 @@ function llmsTxtPlugin(options) {
         markdownPath,
         url,
         description: frontmatter.description,
+        content: cleanMarkdown(content),
       });
     }
 
@@ -472,6 +475,8 @@ function llmsTxtPlugin(options) {
       pages.map((page) => [page.markdownPath, page]),
     );
     const usedMarkdownPaths = new Set();
+    /** @type {{ title: string; markdownPath: string; url: string; description?: string; content: string }[]} */
+    const orderedPages = [];
     const sidebarSections = collectSidebarSections(
       Array.isArray(options.sidebar) ? options.sidebar : [],
     );
@@ -491,6 +496,7 @@ function llmsTxtPlugin(options) {
         const page = pageByMarkdownPath.get(markdownPath);
         if (!page || usedMarkdownPaths.has(markdownPath)) continue;
         usedMarkdownPaths.add(markdownPath);
+        orderedPages.push(page);
         const description = page.description ? ` - ${page.description}` : "";
         lines.push(`- [${page.title}](${page.url})${description}`);
       }
@@ -506,14 +512,20 @@ function llmsTxtPlugin(options) {
       lines.push("## Other Pages");
       lines.push("");
       for (const page of remainingPages) {
+        orderedPages.push(page);
         const description = page.description ? ` - ${page.description}` : "";
         lines.push(`- [${page.title}](${page.url})${description}`);
       }
       lines.push("");
     }
 
+    const llmsFullSource = `${orderedPages
+      .map((page) => page.content.trimEnd())
+      .join("\n\n---\n\n")}\n`;
+
     return {
-      source: lines.join("\n"),
+      llmsSource: lines.join("\n"),
+      llmsFullSource,
       pageCount: pages.length,
     };
   }
@@ -523,37 +535,50 @@ function llmsTxtPlugin(options) {
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ? req.url.split("?")[0] : "";
-        if (url !== llmsRoute) {
+        if (url !== llmsRoute && url !== llmsFullRoute) {
           next();
           return;
         }
 
-        const result = await buildLlmsTxtSource();
+        const result = await buildLlmsSources();
         if (!result) {
           res.statusCode = 404;
           res.setHeader("Content-Type", "text/plain; charset=utf-8");
-          res.end("llms.txt could not be generated.");
+          res.end("LLMS files could not be generated.");
           return;
         }
 
         res.statusCode = 200;
         res.setHeader("Content-Type", "text/plain; charset=utf-8");
-        res.end(result.source);
+        if (url === llmsFullRoute) {
+          res.end(result.llmsFullSource);
+          return;
+        }
+
+        res.end(result.llmsSource);
       });
     },
     async generateBundle() {
       if (hasGenerated) return;
-      const result = await buildLlmsTxtSource();
+      const result = await buildLlmsSources();
       if (!result) return;
 
       this.emitFile({
         type: "asset",
         fileName: "llms.txt",
-        source: result.source,
+        source: result.llmsSource,
+      });
+
+      this.emitFile({
+        type: "asset",
+        fileName: "llms-full.txt",
+        source: result.llmsFullSource,
       });
 
       hasGenerated = true;
-      options.logger.info(`Generated llms.txt with ${result.pageCount} entries.`);
+      options.logger.info(
+        `Generated llms.txt and llms-full.txt with ${result.pageCount} entries.`,
+      );
     },
   };
 }
