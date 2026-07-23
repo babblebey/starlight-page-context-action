@@ -4,7 +4,6 @@ A [Starlight](https://starlight.astro.build/) plugin that adds page action butto
 
 <img width="1500" height="756" alt="hero" src="https://github.com/user-attachments/assets/27bdf13a-32da-4f6a-abc3-91ed71ad1869" />
 
-
 **[Demo & Docs](https://starlight-page-context-action.vercel.app)**
 
 ## Features
