@@ -532,6 +532,11 @@ function llmsTxtPlugin(options) {
 
   return {
     name: "starlight-page-context-action-llms-txt",
+    apply: (_, env) => {
+      if (env.command === "serve") return true;
+      if (env.command === "build") return env.ssrBuild !== true;
+      return false;
+    },
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ? req.url.split("?")[0] : "";
