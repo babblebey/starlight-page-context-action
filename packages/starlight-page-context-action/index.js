@@ -576,7 +576,11 @@ function llmsTxtPlugin(options) {
       const result = await buildLlmsSources();
       if (!result) return;
 
-      await writeFile(path.join(outDir, "llms.txt"), result.llmsSource, "utf-8");
+      await writeFile(
+        path.join(outDir, "llms.txt"),
+        result.llmsSource,
+        "utf-8",
+      );
       await writeFile(
         path.join(outDir, "llms-full.txt"),
         result.llmsFullSource,
