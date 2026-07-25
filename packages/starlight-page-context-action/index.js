@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { viteStaticCopy } from "vite-plugin-static-copy";
@@ -409,6 +409,7 @@ async function collectDocsFiles(docsDir) {
 /**
  * @param {{
  *   root: URL;
+ *   outDir?: URL;
  *   site?: URL;
  *   base?: string;
  *   title?: string;
@@ -423,6 +424,7 @@ function llmsTxtPlugin(options) {
     "content",
     "docs",
   );
+  const outDir = options.outDir ? fileURLToPath(options.outDir) : undefined;
   const llmsRoute = getLlmsRoute(options.base, "llms.txt");
   const llmsFullRoute = getLlmsRoute(options.base, "llms-full.txt");
   let hasGenerated = false;
@@ -455,7 +457,11 @@ function llmsTxtPlugin(options) {
       if (frontmatter.draft) continue;
 
       const markdownPath = toMarkdownAssetPath(docFile);
-      const url = toPublicUrl(markdownPath, options.site?.toString(), options.base);
+      const url = toPublicUrl(
+        markdownPath,
+        options.site?.toString(),
+        options.base,
+      );
       const inferredTitle = toTitleCase(
         path.basename(markdownPath, ".md") || "Index",
       );
@@ -532,6 +538,11 @@ function llmsTxtPlugin(options) {
 
   return {
     name: "starlight-page-context-action-llms-txt",
+    apply: (_, env) => {
+      if (env.command === "serve") return true;
+      if (env.command === "build") return env.ssrBuild !== true;
+      return false;
+    },
     configureServer(server) {
       server.middlewares.use(async (req, res, next) => {
         const url = req.url ? req.url.split("?")[0] : "";
@@ -558,22 +569,19 @@ function llmsTxtPlugin(options) {
         res.end(result.llmsSource);
       });
     },
-    async generateBundle() {
+    async writeBundle() {
       if (hasGenerated) return;
+      if (!outDir) return;
+
       const result = await buildLlmsSources();
       if (!result) return;
 
-      this.emitFile({
-        type: "asset",
-        fileName: "llms.txt",
-        source: result.llmsSource,
-      });
-
-      this.emitFile({
-        type: "asset",
-        fileName: "llms-full.txt",
-        source: result.llmsFullSource,
-      });
+      await writeFile(path.join(outDir, "llms.txt"), result.llmsSource, "utf-8");
+      await writeFile(
+        path.join(outDir, "llms-full.txt"),
+        result.llmsFullSource,
+        "utf-8",
+      );
 
       hasGenerated = true;
       options.logger.info(
@@ -624,7 +632,9 @@ export default function starlightPageContextAction(userConfig = {}) {
               config: astroConfig,
             }) {
               const shouldGenerateMarkdown =
-                config.actions.copy || config.actions.viewMarkdown || config.llmsTxt;
+                config.actions.copy ||
+                config.actions.viewMarkdown ||
+                config.llmsTxt;
 
               updateAstroConfig({
                 vite: {
@@ -653,6 +663,7 @@ export default function starlightPageContextAction(userConfig = {}) {
                       ? [
                           llmsTxtPlugin({
                             root: astroConfig.root,
+                            outDir: astroConfig.outDir,
                             site: astroConfig.site,
                             base: astroConfig.base,
                             title: starlightConfig.title,
