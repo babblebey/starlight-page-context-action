@@ -455,7 +455,11 @@ function llmsTxtPlugin(options) {
       if (frontmatter.draft) continue;
 
       const markdownPath = toMarkdownAssetPath(docFile);
-      const url = toPublicUrl(markdownPath, options.site?.toString(), options.base);
+      const url = toPublicUrl(
+        markdownPath,
+        options.site?.toString(),
+        options.base,
+      );
       const inferredTitle = toTitleCase(
         path.basename(markdownPath, ".md") || "Index",
       );
@@ -629,7 +633,9 @@ export default function starlightPageContextAction(userConfig = {}) {
               config: astroConfig,
             }) {
               const shouldGenerateMarkdown =
-                config.actions.copy || config.actions.viewMarkdown || config.llmsTxt;
+                config.actions.copy ||
+                config.actions.viewMarkdown ||
+                config.llmsTxt;
 
               updateAstroConfig({
                 vite: {
