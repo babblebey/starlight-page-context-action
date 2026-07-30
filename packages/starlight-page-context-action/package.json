@@ -54,7 +54,7 @@
       [
         "@semantic-release/github",
         {
-          "successComment": ":tada: This PR is included in **${nextRelease.gitTag}** :tada:\n\nThe release is available on [GitHub release](${releases?.[0]?.url || ''})\n\nYour **[semantic-release](https://github.com/semantic-release/semantic-release)** bot :package::rocket:"
+          "successComment": ":tada: This ${issue.pull_request ? 'PR is included' : 'issue has been resolved'} in **${nextRelease.gitTag}** :tada:\n\n${releases?.length ? `The release is available on${releases.length === 1 ? ` [${releases[0].name}](${releases[0].url || ''})` : `:\\n${releases.map((release) => `- [${release.name}](${release.url || ''})`).join('\\n')}`}` : ''}\n\nYour **[semantic-release](https://github.com/semantic-release/semantic-release)** bot :package::rocket:"
         }
       ]
     ]
